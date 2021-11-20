@@ -1,3 +1,11 @@
+.content__title{
+  padding: 20px 0 0 20px;
+  padding-bottom: 40px;
+  font-size: 30px;
+}
+.content__box{
+  padding-top: 100px;
+}
 .App {
   text-align: center;
 }
