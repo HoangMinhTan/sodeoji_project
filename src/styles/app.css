@@ -917,6 +917,8 @@ video {
 
 .w-thanh {
   width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 100%;
 }
 
 .w-16 {
@@ -1018,7 +1020,27 @@ video {
 .starBorderOutlined {
   color: #ffffff !important;
  }
+/* 
+Css in Edit-profile (fail and success)
+*/
+.notshow{
+  display: none;
+  position: absolute;
+  opacity: 0.7;
+  transition: 0.3ms;
+  top: 10%;
+}
 
+.show{
+  display: block;
+  top: 50%;
+}
+
+.mshow{
+  display: block;
+  top: 10%;
+}
+/* end */
 @keyframes spin {
   to {
     transform: rotate(360deg);
