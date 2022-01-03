@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import useQuizs from '../../hooks/use-quizs'
 import Quiz from './quiz';
+import QuizDo from './quizDo'
 import 'react-loading-skeleton/dist/skeleton.css'
 
 export default function Quizs({ type, param2 }) {
@@ -12,18 +13,24 @@ export default function Quizs({ type, param2 }) {
         if (quizs) setLoading(true);
     })
     return (
-        <div className="container col-span-2 mb-12">
+        <>
             {!loading ? (
-                <Skeleton count={4} width={640} height={500} className="mb-5" />
+                <div className="container mb-12">
+                    <Skeleton count={2} height={500} className="mb-5" />
+                </div>
+            ) : type && type === "do" ? (
+                <div className="container" style={{marginTop: '10%', height: '50%'}}>
+                    <QuizDo content={quizs[0]} />
+                </div>
             ) : (
                 quizs.map((quiz) => {
                     return (
-                      <>
-                        <Quiz content={quiz}/>
-                      </>
+                        <div className="container mb-12">
+                            <Quiz content={quiz} />
+                        </div>
                     )
-                  })
+                })
             )}
-        </div>
+        </>
     );
 }

@@ -5,39 +5,44 @@ import UserContext from '../../context/user';
 export default function QuizRank({ doneUser }) {
     const { user: loggedInUser } = useContext(UserContext);
     const { user } = useUser(loggedInUser?.uid);
-    const [data, setData] = useState();
+    const [data, setData] = useState([]);
     const [myData, setMyData] = useState();
 
     useEffect(() => {
         var doneUserTop3Arr = [];
 
-        Object.keys(doneUser).map((key) => {
-            var item = doneUser[key];
-            item.user_name = key;
+        if (doneUser) {
+            Object.keys(doneUser).map((key) => {
+                var item = doneUser[key];
+                item.user_name = key;
 
-            doneUserTop3Arr.push(item);
-        });
-        doneUserTop3Arr.sort((a, b) => {
-            if (b.result !== a.result) return b.result - a.result;
-            if (b.time !== a.time) return a.time - b.time;
-            return a.user_name - b.username
-        });
-        setData(doneUserTop3Arr.slice(0, 3));
-        console.log(doneUserTop3Arr.length);
-        if (doneUser[`${user?.username}`]) {
-            setMyData(doneUser[`${user?.username}`]);
+                doneUserTop3Arr.push(item);
+            });
+            doneUserTop3Arr.sort((a, b) => {
+                if (b.result !== a.result) return b.result - a.result;
+                if (b.time !== a.time) return a.time - b.time;
+                return a.user_name - b.username
+            });
+            setData(doneUserTop3Arr.slice(0, 3));
+            // console.log(doneUserTop3Arr.length);
         }
         // console.log(doneUser);
         // console.log(data);
         // console.log(myData);
     }, []);
 
+    useEffect(() => {
+        if (user) {
+            setMyData(doneUser[`${user?.username}`]);
+        }
+    }, [user?.username]);
+
     return (
-        <div className="p-4 pt-2 pb-1 flex flex-col items-center w-full">
-            <p className="font-bold text-black-light text-2xl" >
+        <div className="p-4 pt-2 flex flex-col items-center w-full h-full">
+            <p className="font-bold text-black-light text-2xl h-16" >
                 上位の結果：
             </p>
-            <div className='grid grid-ranking w-full justify-between'>
+            <div className='grid grid-ranking w-full justify-between text-xl'>
                 <div>名前</div>
                 <div className='text-center'>正解</div>
                 <div className='text-center'>時間</div>

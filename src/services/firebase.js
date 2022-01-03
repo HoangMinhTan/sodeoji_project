@@ -165,6 +165,12 @@ export async function getQuizs(user, type, param2) {
         return item.done_user[`${user?.username}`] === param2;
       }));
       break;
+    case "do":
+      result = await Promise.all(result.filter((item) => {
+        // console.log(item);
+        return item.key === param2;
+      }));
+      break;
     default:
       break;
   }
