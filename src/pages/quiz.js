@@ -19,7 +19,7 @@ export default function QuizPage() {
       <Header />
       <div className="grid grid-cols-3-new">
         <Sidebar />
-        <div className="max-w-screen-lg justify-between mx-auto">
+        <div className="w-70 justify-between mx-auto show">
           <Quizs type={type} param2={param2} />
         </div>
       </div>
@@ -28,5 +28,4 @@ export default function QuizPage() {
 }
 
 QuizPage.propTypes = {
-  user: PropTypes.object.isRequired
 };
