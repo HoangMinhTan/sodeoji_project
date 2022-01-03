@@ -750,6 +750,11 @@ video {
   margin-right: auto;
 }
 
+.my-auto {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
 .m-auto {
   margin: auto;
 }
@@ -1072,6 +1077,16 @@ video {
 
 .gap-8 {
   gap: 2rem;
+}
+
+.grid-infor-pre {
+  grid-template-rows: 15% auto 40% 15%;
+  grid-gap: 5px;
+}
+
+.grid-infor {
+  grid-template-rows: auto auto auto auto;
+  grid-template-columns: auto 30%;
 }
 
 .grid-do-quiz-result {
