@@ -2,7 +2,7 @@ import { useState, Fragment, React, useContext, useEffect } from 'react';
 import FirebaseContext from '../../context/firebase';
 import useUser from '../../hooks/use-user';
 import UserContext from '../../context/user';
-import { KeyboardDatePicker, MuiPickersUtilsProvider  } from "@material-ui/pickers";
+import { DateTimePicker, KeyboardDateTimePicker,MuiPickersUtilsProvider, TimePicker, KeyboardDatePicker  } from "@material-ui/pickers";
 import DateFnsUtils from '@date-io/date-fns';
 
 
@@ -11,12 +11,15 @@ export default function MakeQuiz({ type, post, handleClose }) {
     const { user } = useUser(loggedInUser?.uid);
     const [title, setTitle] = useState('');
     const [time, setTime] = useState('');
+    const [time_start,setTime_start] = useState('');
+    const [time_finish, setTime_finish] = useState('');
     // const [imgPost, setImgPost] = useState('');
     const [score, setScore] = useState('');
     const [active, setActive] = useState(1);
     const [content, setContent] = useState('');
     const { database, storage } = useContext(FirebaseContext);
     const [selectedDate, handleDateChange] = useState(new Date());
+    const [answer, setAnswer] = useState([]);
     const today = new Date();
     
     function convertDate(date){
@@ -143,7 +146,7 @@ export default function MakeQuiz({ type, post, handleClose }) {
     return (
         <>
             <div className="flex flex-col w-full item-center bg-white p-4 rounded width-post">
-                <label>
+                <label className="h3 fw-bold">
                     タイトル:
                     <input
                         type="text"
@@ -152,15 +155,29 @@ export default function MakeQuiz({ type, post, handleClose }) {
                     />
                 </label>
                 <div>
-                <label>
-                    時間:
-                    <input
-                        type="text"
-                        className="form-control text-sm text-gray-base w-50 mr-3  px-4  border border-gray-primary rounded mb-2"
-                        onChange={({ target }) => setTime(target.value)}
+                <label className="h5">
+                    始まる時間: 
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <DateTimePicker
+                        variant="inline"
+                        value={selectedDate}
+                        onChange={handleDateChange}
                     />
+                    </MuiPickersUtilsProvider>
                 </label>
-                <label>
+                <label className="h5">
+                    始まる時間: 
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <TimePicker
+                        clearable
+                        className="form-control text-sm text-gray-base w-50 mr-3  px-4  border border-gray-primary rounded mb-2"
+                        ampm={false}
+                        value={time_finish}
+                        onChange={time_finish => setTime_finish(time_finish)}
+                    />
+                    </MuiPickersUtilsProvider>
+                </label>
+                <label className="h5">
                     クイズの点数:
                     <input
                         type="text"
@@ -168,7 +185,7 @@ export default function MakeQuiz({ type, post, handleClose }) {
                         onChange={({ target }) => setScore(target.value)}
                     />
                 </label>
-                <label>
+                <label className="h5">
                     状態:
                     <select class="form-select" aria-label="Default select example" onChange={({ target }) => setActive(target.value)}>
                     <option selected value="1" className='text-success'>アクティブ</option>
@@ -177,7 +194,7 @@ export default function MakeQuiz({ type, post, handleClose }) {
                 </label>
                 
                 </div>
-                <label>
+                <label className="h5">
                     期日:
                     <br className='mb-2'/>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -197,8 +214,8 @@ export default function MakeQuiz({ type, post, handleClose }) {
                         return (
                             <>
                             <hr className='mb-2'/>
-                            <label>
-                                タイトル:
+                            <label className="h3 fw-bold">
+                                質問:
                                 <input
                                     type="text"
                                     className="form-control text-sm text-gray-base w-full mr-3  px-4  border border-gray-primary rounded mb-2"
@@ -207,7 +224,7 @@ export default function MakeQuiz({ type, post, handleClose }) {
                             </label>
                             <div className='flex flex-row'>
                                 <div className='col-md-4 '>
-                                    <label>
+                                    <label className="h5">
                                         A:
                                         <input
                                             type="text"
@@ -217,7 +234,7 @@ export default function MakeQuiz({ type, post, handleClose }) {
                                     </label>
                                 </div>
                                 <div className='col-md-4 '>
-                                    <label>
+                                    <label className="h5">
                                         B:
                                         <input
                                             type="text"
@@ -227,7 +244,7 @@ export default function MakeQuiz({ type, post, handleClose }) {
                                     </label>
                                 </div>
                                 <div className='col-md-4 '>
-                                    <label>
+                                    <label className="h5">
                                         C:
                                         <input
                                             type="text"
@@ -237,7 +254,15 @@ export default function MakeQuiz({ type, post, handleClose }) {
                                     </label>
                                 </div>
                             </div>
-                            <label>
+                            <label className="h5">
+                                正解:
+                                <select class="form-select w-20" aria-label="Default select example" onChange={({ target }) => setAnswer(target.value)}>
+                                <option selected value="A" >A</option>
+                                <option value="B" >B</option>
+                                <option value="C" >C</option>
+                                </select>
+                            </label>
+                            <label className="h5">
                                 説明:
                                 <textarea
                                     defaultValue={content}
