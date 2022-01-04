@@ -8,6 +8,7 @@ import Dialog from '@material-ui/core/Dialog';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import { withStyles } from '@material-ui/core/styles';
 import MakeQuiz from './MakeQuiz';
+var stt=1;
 
 const DialogActions = withStyles((theme) => ({
     root: {
@@ -86,9 +87,9 @@ export default function Quizz() {
                     </thead>
                     <tbody>
                         {quizz?
-                            quizz.map(e=> <>
+                            quizz.map((e, i)=> <>
                                 <tr>
-                                    <td>{e.id}</td>
+                                    <td>{i+1}</td>
                                     <td>{e.val.title}</td>
                                     <td>{e.val.time}</td>
                                     <td>{e.val.end_date}</td>

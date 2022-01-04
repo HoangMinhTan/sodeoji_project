@@ -14,10 +14,114 @@ export default function MakeQuiz({ type, post, handleClose }) {
     // const [imgPost, setImgPost] = useState('');
     const [score, setScore] = useState('');
     const [active, setActive] = useState(1);
-    const [content, setContent] = useState('');
+    const [explain, setExplain] = useState('');
     const { database, storage } = useContext(FirebaseContext);
     const [selectedDate, handleDateChange] = useState(new Date());
+    const [answer, setAnswer] = useState([]);
     const today = new Date();
+    const [question, setQuestion] = useState([]);
+
+
+    const addQuestion = (type, i, value) => {
+        switch (type){
+            case 'question': 
+                setQuestion((s) => {
+                    s[`question`+(i+1)] = {
+                        question: value,
+                        answer: {
+                            A: s[`question`+(i+1)]?.answer?.A,
+                            B: s[`question`+(i+1)]?.answer?.B,
+                            C: s[`question`+(i+1)]?.answer?.C
+                        },
+                        right_answer: s[`question`+(i+1)]?.right_answer? s[`question`+(i+1)]?.right_answer: "A",
+                        explain: s[`question`+(i+1)]?.explain
+                    };
+                    return s;
+                });
+                console.log(question);
+                break;
+            case 'A':
+                setQuestion((s) => {
+                    s[`question`+(i+1)] = {
+                        question: s[`question`+(i+1)]?.question,
+                        answer: {
+                            A: value,
+                            B: s[`question`+(i+1)]?.answer?.B,
+                            C: s[`question`+(i+1)]?.answer?.C
+                        },
+                        right_answer: s[`question`+(i+1)]?.right_answer,
+                        explain: s[`question`+(i+1)]?.explain
+                    };
+                    return s;
+                });
+                console.log(question);
+                break;
+            case 'B':
+                setQuestion((s) => {
+                    s[`question`+(i+1)] = {
+                        question: s[`question`+(i+1)]?.question,
+                        answer: {
+                            A: s[`question`+(i+1)]?.answer?.A,
+                            B: value,
+                            C: s[`question`+(i+1)]?.answer?.C
+                        },
+                        right_answer: s[`question`+(i+1)]?.right_answer,
+                        explain: s[`question`+(i+1)]?.explain
+                    };
+                    return s;
+                });
+                console.log(question);
+                break;
+            case 'C':
+                setQuestion((s) => {
+                    s[`question`+(i+1)] = {
+                        question: s[`question`+(i+1)]?.question,
+                        answer: {
+                            A: s[`question`+(i+1)]?.answer?.A,
+                            B: s[`question`+(i+1)]?.answer?.B,
+                            C: value
+                        },
+                        right_answer: s[`question`+(i+1)]?.right_answer,
+                        explain: s[`question`+(i+1)]?.explain
+                    };
+                    return s;
+                });
+                console.log(question);
+                break;
+            case 'right_answer':
+                setQuestion((s) => {
+                    s[`question`+(i+1)] = {
+                        question: s[`question`+(i+1)]?.question,
+                        answer: {
+                            A: s[`question`+(i+1)]?.answer?.A,
+                            B: s[`question`+(i+1)]?.answer?.B,
+                            C: s[`question`+(i+1)]?.answer?.C
+                        },
+                        right_answer: value,
+                        explain: s[`question`+(i+1)]?.explain
+                    };
+                    return s;
+                });
+                console.log(question);
+                break;
+            default:
+                setQuestion((s) => {
+                    s[`question`+(i+1)] = {
+                        question: s[`question`+(i+1)]?.question,
+                        answer: {
+                            A: s[`question`+(i+1)]?.answer?.A,
+                            B: s[`question`+(i+1)]?.answer?.B,
+                            C: s[`question`+(i+1)]?.answer?.C
+                        },
+                        right_answer: s[`question`+(i+1)]?.right_answer,
+                        explain: value
+                    };
+                    return s;
+                });
+                console.log(question);
+                break;
+        }
+    }
     
     function convertDate(date){
         var dd = String(date.getDate()).padStart(2, '0');
@@ -57,7 +161,7 @@ export default function MakeQuiz({ type, post, handleClose }) {
             return newArr;
         });
     };
-    const isInvalid = content === '' && title === '';
+    const isInvalid = explain === '' && title === '';
 
     // useEffect(() => {
     //     if (post) {
@@ -97,10 +201,10 @@ export default function MakeQuiz({ type, post, handleClose }) {
         .ref('Quizs')
         .push({
             active: active,
-            content: content,
             create_date: convertDate(today),
             done_user: '',
             end_date: convertDate(selectedDate),
+            questions: question,
             score: score,
             time: time,
             title: title
@@ -143,7 +247,7 @@ export default function MakeQuiz({ type, post, handleClose }) {
     return (
         <>
             <div className="flex flex-col w-full item-center bg-white p-4 rounded width-post">
-                <label>
+                <label className="h3 fw-bold">
                     タイトル:
                     <input
                         type="text"
@@ -152,23 +256,23 @@ export default function MakeQuiz({ type, post, handleClose }) {
                     />
                 </label>
                 <div>
-                <label>
+                <label className="h5">
                     時間:
                     <input
-                        type="text"
+                        type="number"
                         className="form-control text-sm text-gray-base w-50 mr-3  px-4  border border-gray-primary rounded mb-2"
                         onChange={({ target }) => setTime(target.value)}
                     />
                 </label>
-                <label>
+                <label className="h5">
                     クイズの点数:
                     <input
-                        type="text"
+                        type="number"
                         className="form-control text-sm text-gray-base w-50 mr-3  px-4  border border-gray-primary rounded mb-2"
                         onChange={({ target }) => setScore(target.value)}
                     />
                 </label>
-                <label>
+                <label className="h5">
                     状態:
                     <select class="form-select" aria-label="Default select example" onChange={({ target }) => setActive(target.value)}>
                     <option selected value="1" className='text-success'>アクティブ</option>
@@ -177,7 +281,7 @@ export default function MakeQuiz({ type, post, handleClose }) {
                 </label>
                 
                 </div>
-                <label>
+                <label className="h5">
                     期日:
                     <br className='mb-2'/>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -197,52 +301,60 @@ export default function MakeQuiz({ type, post, handleClose }) {
                         return (
                             <>
                             <hr className='mb-2'/>
-                            <label>
-                                タイトル:
+                            <label className="h3 fw-bold">
+                                質問:
                                 <input
                                     type="text"
                                     className="form-control text-sm text-gray-base w-full mr-3  px-4  border border-gray-primary rounded mb-2"
-                                    onChange={({ target }) => setTitle(target.value)}
+                                    onChange={({ target }) => addQuestion('question',i, target.value)}
                                 />
                             </label>
                             <div className='flex flex-row'>
                                 <div className='col-md-4 '>
-                                    <label>
+                                    <label className="h5">
                                         A:
                                         <input
                                             type="text"
                                             className="form-control text-sm text-gray-base w-full mr-3  px-4  border border-gray-primary rounded mb-2"
-                                            onChange={({ target }) => setTime(target.value)}
+                                            onChange={({ target }) => addQuestion('A',i, target.value)}
                                         />
                                     </label>
                                 </div>
                                 <div className='col-md-4 '>
-                                    <label>
+                                    <label className="h5">
                                         B:
                                         <input
                                             type="text"
                                             className="form-control text-sm text-gray-base w-full mr-3  px-4  border border-gray-primary rounded mb-2"
-                                            onChange={({ target }) => setTime(target.value)}
+                                            onChange={({ target }) => addQuestion('B', i, target.value)}
                                         />
                                     </label>
                                 </div>
                                 <div className='col-md-4 '>
-                                    <label>
+                                    <label className="h5">
                                         C:
                                         <input
                                             type="text"
                                             className="form-control text-sm text-gray-base w-full mr-3  px-4  border border-gray-primary rounded mb-2"
-                                            onChange={({ target }) => setTime(target.value)}
+                                            onChange={({ target }) => addQuestion('C', i, target.value)}
                                         />
                                     </label>
                                 </div>
                             </div>
-                            <label>
+                            <label className="h5">
+                                正解:
+                                <select class="form-select w-20" aria-label="Default select example" onChange={({ target }) => addQuestion('right_answer',i,target.value)}>
+                                <option selected value="A" >A</option>
+                                <option value="B" >B</option>
+                                <option value="C" >C</option>
+                                </select>
+                            </label>
+                            <label className="h5">
                                 説明:
                                 <textarea
-                                    defaultValue={content}
+                                    defaultValue={explain}
                                     className="form-controltext-sm text-gray-base w-full mr-3 p-4 h-20 border border-gray-primary rounded mb-2"
-                                    onChange={({ target }) => setContent(target.value)}
+                                    onChange={({ target }) => addQuestion('explain', i, target.value)}
                                 />
                             </label>
                             </>
