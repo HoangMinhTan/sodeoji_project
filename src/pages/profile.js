@@ -1,17 +1,26 @@
 import { useParams, useHistory } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { getUserByUsername } from '../services/firebase';
+import { useState, useEffect, useContext } from 'react';
+import { getUserByUsername, snapshotToArray } from '../services/firebase';
 import * as ROUTES from '../constants/routes';
 import Header from '../components/header';
 import UserProfile from '../components/profile';
 import "firebase/auth";
 import "./../styles/profile.css";
+import FirebaseContext from '../context/firebase';
+import { database } from '../lib/firebase';
 
 export default function Profile() {
   const { username } = useParams();
   const [user, setUser] = useState(null);
   const history = useHistory();
-  
+
+  // get count file
+  const {storge, db} = useContext(FirebaseContext);
+  const realtimeDb = database;
+  const [userPost, setPost] = useState(0);
+  const [userFile, setFile] = useState(0);
+  const [userJoin, setJoin] = useState(0);
+  const [userScore, setScore] = useState(0);
 
   useEffect(() => {
     async function checkUserExists() {
@@ -21,11 +30,66 @@ export default function Profile() {
       } else {
         history.push(ROUTES.NOT_FOUND);
       }
-      //console.log(user);
     }
 
     checkUserExists();
+
+
+
+    console.log(username);
+
     document.title = 'プロフィール';
+
+    // count post and file
+    async function post(username){
+      var postList;
+      await realtimeDb.ref(`Posts`).once('value', snapshot => {
+        if (snapshot.exists()) {
+          postList = snapshotToArray(snapshot);
+        }
+      });
+    
+      var countPost = 0;
+      var countFile = 0;
+      for (var i = 0; i < postList.length; i += 1){
+        if (postList[i].author == username){
+          countPost += 1;
+          if (postList[i].file_name != ""){
+            countFile += 1;
+          }
+        }
+      }
+      setPost(countPost);
+      setFile(countFile);
+    }
+    post(username);
+
+
+    async function quizCountAndScore(username){
+      var qSList;
+      await realtimeDb.ref(`Quizs`).once('value', snapshot => {
+        if (snapshot.exists()) {
+          qSList = snapshotToArray(snapshot);
+        }
+      });
+
+      var countJoin = 0;
+      var countScore = 0;
+      for (var i = 0; i < qSList.length; i += 1){
+        if (qSList[i].done_user != ""){
+          var keys = Object.keys(qSList[i].done_user);
+          if (username in keys){
+            countJoin += 1;
+            countScore += qSList[i].done_user.username.result;
+          }
+        }
+      }
+      setJoin(countJoin);
+      setScore(countScore);
+    }
+
+    quizCountAndScore(username);
+
   }, [username, history]);
 
   return user?.username ? (
@@ -42,11 +106,34 @@ export default function Profile() {
       </div>
       <hr />
       <div className="show-profile-child">
-        <h3>名前 <span>{user.username}</span></h3>
+        <h3>名前</h3>
+        <span>{user.username}</span>
       </div>
-      <div className="show-profile-child last-child">
-        <h3>グループ <span>{user.group}</span></h3>
+
+      <div className="show-profile-child">
+        <h3>グループ</h3>
+        <span>{user.group}</span>
       </div>
+
+      <div className="show-profile-child">
+        <h3>点</h3>
+        <span>{userScore}</span>
+      </div>
+
+      <div className="show-profile-child">
+        <h3>ポスト</h3>
+        <span>{userPost}</span>
+      </div>
+      <div className="show-profile-child">
+        <h3>共有したファイル</h3>
+        <span>{userFile}</span>
+      </div>
+      
+      <div className="show-profile-child">
+        <h3>参加しましたクイズ</h3>
+        <span>{userJoin}</span>
+      </div>
+      
     </div>
   </>
   ) : null;

@@ -217,7 +217,7 @@ export default function EditProfile({ user, handleClose }) {
 
 
         <div>
-          <button className={`bg-red-medium text-white w-45 rounded h-8 font-bold ${isInvalid && 'opacity-50'}`}
+          <button className={`bg-blue-medium text-white w-45 rounded h-8 font-bold ${isInvalid && 'opacity-50'}`}
             disabled={isInvalid}
             onClick={() => {
               handleUpdateUserProfile();
@@ -229,7 +229,7 @@ export default function EditProfile({ user, handleClose }) {
           </button>
           <a className={`pt-1`}> </a>
 
-          <button className={` bg-blue-medium text-white w-45 rounded h-8 font-bold `}
+          <button className={` bg-red-medium text-white w-45 rounded h-8 font-bold `}
             onClick={handleClose}
           > キャンセル
           </button>
