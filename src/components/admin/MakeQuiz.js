@@ -6,7 +6,7 @@ import { KeyboardDatePicker, MuiPickersUtilsProvider  } from "@material-ui/picke
 import DateFnsUtils from '@date-io/date-fns';
 
 
-export default function MakeQuiz({ type, post, handleClose }) {
+export default function MakeQuiz({ type, id, handleClose }) {
     const { user: loggedInUser } = useContext(UserContext);
     const { user } = useUser(loggedInUser?.uid);
     const [title, setTitle] = useState('');
