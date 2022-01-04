@@ -139,7 +139,7 @@ export async function updateAvatar(
   );
 };
 
-export async function getQuizs(user, type, param2) {
+export async function getQuizs(type, param2) {
   const snapshot = await database
     .ref('Quizs')
     .once("value");
@@ -161,8 +161,8 @@ export async function getQuizs(user, type, param2) {
       break;
     case "done":
       result = await Promise.all(result.filter((item) => {
-        // console.log(item);
-        return item.done_user[`${user?.username}`] === param2;
+        console.log(item, param2);
+        return item.done_user[`${param2}`];
       }));
       break;
     case "do":
