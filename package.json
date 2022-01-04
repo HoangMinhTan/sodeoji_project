@@ -14,6 +14,7 @@
     "bootstrap": "^5.1.3",
     "date-fns": "^2.27.0",
     "firebase": "^8.10.0",
+    "jquery": "^3.6.0",
     "react": "^17.0.2",
     "react-bootstrap": "^2.0.3",
     "react-comments-section": "^1.0.7",
