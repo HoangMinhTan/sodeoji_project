@@ -30,7 +30,7 @@ export default function useCheckVotes(uid, post_id) {
     if (uid && post_id) {
         check(uid, post_id);
     }
-  }, [uid,post_id, database.ref('Votes')]);
+  }, [ database.ref('Votes')]);
 
   return { isVoted, id, setIsVoted };
 }
