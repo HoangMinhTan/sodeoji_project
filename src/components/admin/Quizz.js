@@ -75,8 +75,8 @@ export default function Quizz() {
                 <table className="mt-4 table table-hover text-center">
                     <thead>
                         <tr className=''>
-                            <th>ID</th>
-                            <th>説明</th>
+                            <th>項目</th>
+                            <th>タイトル</th>
                             <th>時間</th>
                             <th>期日</th>
                             <th>参加者数</th>
