@@ -21,7 +21,7 @@ export default function Login() {
 
     try {
       await firebase.auth().signInWithEmailAndPassword(username + '@gmail.com', password);
-      history.push(ROUTES.DASHBOARD);
+      history.push('/');
     } catch (error) {
       serUsername('');
       setPassword('');
@@ -31,7 +31,7 @@ export default function Login() {
 
   useEffect(() => {
     if (user.user!=null){
-      history.push(ROUTES.DASHBOARD);
+      history.push('/');
     }
     document.title = 'ログイン';
   },[user]);

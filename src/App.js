@@ -6,6 +6,7 @@ import UserContext from './context/user';
 import useAuthListener from './hooks/use-auth-listener';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ProtectedRoute from './helpers/protected-route';
+import ProtectedAdmin from './helpers/protected-admin';
 
 const Login = lazy(() => import('./pages/login'));
 const SignUp = lazy(() => import('./pages/sign-up'));
@@ -28,6 +29,9 @@ export default function App() {
               exact
               path="/"
               render={() => {
+                if (user.displayName === 'admin'){
+                  return <Redirect to={`${ROUTES.ADMIN}`}/>
+                }
                 return (
                   <Redirect to={`${ROUTES.DASHBOARD}`} />
                 )
@@ -41,9 +45,9 @@ export default function App() {
             <ProtectedRoute user={user} path={`${ROUTES.DASHBOARD}/:type?/:param2?`} exact>
               <Dashboard />
             </ProtectedRoute>
-            <ProtectedRoute user={user} path={`${ROUTES.ADMIN}/:type?/:param2?`} exact>
+            <ProtectedAdmin user={user} path={`${ROUTES.ADMIN}/:type?/:param2?`} exact>
               <Admin />
-            </ProtectedRoute>
+            </ProtectedAdmin>
             <Route component={NotFound} />
           </Switch>
         </Suspense>
