@@ -211,8 +211,8 @@ export default function Quiz({ content }) {
                                         )}
                                     </div>
 
-                                    <div className="grid h-full" style={{ gridTemplateRows: 'auto 10%' }}>
-                                        {quests[questNum].explain ? (<div className="text-center text-2xl mx-auto h-90">{quests[questNum].explain}</div>) : (<div></div>)}
+                                    <div className="grid h-full" style={{ gridTemplateRows: 'auto 15%' }}>
+                                        {quests[questNum].explain ? (<div className="text-center text-2xl mx-auto h-full">{quests[questNum].explain}</div>) : (<div></div>)}
                                         <div className="text-end pr-5 text-2xl">
                                             {quests.length === questNum + 1 ? (
                                                 <button className="" onClick={handleComplete}>
