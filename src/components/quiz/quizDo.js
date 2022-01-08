@@ -24,8 +24,6 @@ export default function Quiz({ content }) {
     const [doneUser, setDoneUser] = useState();
 
     const circle_icon_style = {
-        position: 'relative',
-        top: '-100%',
         width: '60px',
         height: '60px',
         borderRadius: '50%',
@@ -121,7 +119,7 @@ export default function Quiz({ content }) {
                 state === "complete" ?
                     (
                         <div className="grid grid-do-quiz h-full items-center">
-                            <div className="bg-green-light h-full">
+                            <div className="bg-green-light h-full flex items-center">
                                 <div className="ml-10-per bg-green-light" style={circle_icon_style}>
                                     <SentimentSatisfiedAltIcon fontSize="large" className="m-auto text-white bg-green-light" />
                                 </div>
@@ -154,7 +152,7 @@ export default function Quiz({ content }) {
                                     <QuizRank doneUser={doneUser} />
                                 </div>
                             </div>
-                            <div className="text-end pb-4 pr-5 text-2xl">
+                            <div className="text-end pr-5 text-2xl">
                                 <a href={ROUTES.QUIZ}>
                                     <strong>戻る</strong>
                                 </a>
@@ -164,7 +162,7 @@ export default function Quiz({ content }) {
                         <div className="grid grid-do-quiz h-full items-center">
                             {state === "doing" ? (
                                 <>
-                                    <div className="bg-blue-light h-full">
+                                    <div className="bg-blue-light h-full flex items-center">
                                         <div className="circle ml-10-per">
                                             <strong className="m-auto text-blue-light">{questNum + 1}/{quests.length}</strong>
                                         </div>
@@ -193,13 +191,13 @@ export default function Quiz({ content }) {
                                 <>
 
                                     {correct === true ? (
-                                        <div className="bg-green-light h-full">
+                                        <div className="bg-green-light h-full flex items-center">
                                             <div className="ml-10-per bg-green-light" style={circle_icon_style}>
                                                 <SentimentSatisfiedAltIcon fontSize="large" className="m-auto text-white bg-green-light" />
                                             </div>
                                         </div>
                                     ) : (
-                                        <div className="bg-red-light h-full">
+                                        <div className="bg-red-light h-full flex items-center">
                                             <div className="ml-10-per bg-red-light" style={circle_icon_style}>
                                                 <SentimentVeryDissatisfiedIcon fontSize="large" className="m-auto text-white bg-red-light" />
                                             </div>
@@ -215,7 +213,7 @@ export default function Quiz({ content }) {
 
                                     <div className="grid h-full" style={{ gridTemplateRows: 'auto 10%' }}>
                                         {quests[questNum].explain ? (<div className="text-center text-2xl mx-auto h-90">{quests[questNum].explain}</div>) : (<div></div>)}
-                                        <div className="text-end pr-5 pb-4 text-2xl">
+                                        <div className="text-end pr-5 text-2xl">
                                             {quests.length === questNum + 1 ? (
                                                 <button className="" onClick={handleComplete}>
                                                     <strong>完成</strong>

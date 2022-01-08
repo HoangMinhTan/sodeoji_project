@@ -5,7 +5,7 @@ import QuizRank from './quizRank';
 export default function Quiz({ content }) {
     // console.log(content?.key);
     return (
-        <div className="grid grid-cols-2 rounded col-span-4 border bg-white border-gray-primary mb-12">
+        <div className="grid grid-cols-2 rounded col-span-4 border bg-white border-gray-primary mb-12 h-full">
             <QuizInfor quizID={content?.key} active={content?.active} title={content?.title} content={content?.content} time={content?.time} create_date={content?.create_date} end_date={content?.end_date} score={content?.score}/>
             <QuizRank doneUser={content?.done_user}/>
         </div>
