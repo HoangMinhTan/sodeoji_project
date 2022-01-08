@@ -18,12 +18,12 @@ export default function Header() {
     <header className="h-16 bg-white border-b border-gray-primary">
       <div className="container mx-auto max-w-screen-md h-full">
         <div className="flex justify-between h-full">
-          <div className="text-gray-700 text-center flex items-center align-items cursor-pointer">
+          <div className="text-gray-700 text-center flex items-center cursor-pointer">
             <a className="w-full" href={ROUTES.DASHBOARD}>
               <img aria-label="logo" src="/images/logo.png" alt="Logo" className="w-40 h-full" />
             </a>
           </div>
-          <div className="text-gray-700 text-center flex items-center align-items">
+          <div className="text-gray-700 text-center flex items-center h-90 pb-1">
             <>
               <div className="container flex justify-center items-center">
                 {user ? (
@@ -51,6 +51,11 @@ export default function Header() {
                         <NavDropdown.Item href={`/p/${user?.username}`}>
                           プロフィール
                         </NavDropdown.Item>
+                        {user?.username === 'admin' ? (
+                          <NavDropdown.Item href={`${ROUTES.ADMIN}`}>
+                            管理画面
+                          </NavDropdown.Item>
+                        ) : null}
                         <NavDropdown.Divider />
                         <NavDropdown.Item title="Sign Out"
                           onClick={() => {
