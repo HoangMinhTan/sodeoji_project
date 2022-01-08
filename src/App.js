@@ -29,7 +29,7 @@ export default function App() {
               exact
               path="/"
               render={() => {
-                if (user.displayName === 'admin'){
+                if (user?.displayName === 'admin'){
                   return <Redirect to={`${ROUTES.ADMIN}`}/>
                 }
                 return (
