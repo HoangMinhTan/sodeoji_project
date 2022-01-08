@@ -38,73 +38,73 @@ export default function QuizRank({ doneUser }) {
     }, [user?.username]);
 
     return (
-        <div className="p-4 pt-2 flex flex-col items-center w-full h-full">
+        <div className="p-4 pt-2 flex flex-col items-center w-full h-full justify-center">
             <p className="font-bold text-black-light text-2xl h-16" >
-                上位の結果：
+                上位の結果
             </p>
-            <div className='grid grid-ranking w-full justify-between text-xl'>
-                <div>名前</div>
-                <div className='text-center'>正解</div>
-                <div className='text-center'>時間</div>
-                <div className='text-end'>合計ポイント</div>
+            <div className='grid grid-ranking w-full text-xl'>
+                <strong className='bg-white'>名前</strong>
+                <strong className='text-center bg-white'>正解</strong>
+                <strong className='text-center bg-white'>時間</strong>
+                <strong className='text-end bg-white'>合計ポイント</strong>
                 {data && data?.length !== 0 ? (
                     data.map((doneUser) => {
                         return (
                             <>
-                                <div>{doneUser.user_name}</div>
-                                <div className='text-center'>{doneUser.corrected}</div>
-                                <div className='text-center'>{doneUser.time}</div>
-                                <div className='text-end'>{doneUser.result}</div>
+                                <div className='bg-white'>{doneUser.user_name}</div>
+                                <div className='text-center bg-white'>{doneUser.corrected}</div>
+                                <div className='text-center bg-white'>{doneUser.time}</div>
+                                <div className='text-end bg-white'>{doneUser.result}</div>
                             </>
                         )
                     })
                 ) : null}
                 {data && data?.length === 2 ? (
                     <>
-                        <div>-</div>
-                        <div className='text-center'>-</div>
-                        <div className='text-center'>-</div>
-                        <div className='text-end'>-</div>
+                        <div className='bg-white'>-</div>
+                        <div className='text-center bg-white'>-</div>
+                        <div className='text-center bg-white'>-</div>
+                        <div className='text-end bg-white'>-</div>
                     </>
                 ) : data && data?.length === 1 ? (
                     <>
-                        <div>-</div>
-                        <div className='text-center'>-</div>
-                        <div className='text-center'>-</div>
-                        <div className='text-end'>-</div>
-                        <div>-</div>
-                        <div className='text-center'>-</div>
-                        <div className='text-center'>-</div>
-                        <div className='text-end'>-</div>
+                        <div className='bg-white'>-</div>
+                        <div className='text-center bg-white'>-</div>
+                        <div className='text-center bg-white'>-</div>
+                        <div className='text-end bg-white'>-</div>
+                        <div className='bg-white'>-</div>
+                        <div className='text-center bg-white'>-</div>
+                        <div className='text-center bg-white'>-</div>
+                        <div className='text-end bg-white'>-</div>
                     </>
                 ) : data && data?.length === 0 ? (
                     <>
-                        <div>-</div>
-                        <div className='text-center'>-</div>
-                        <div className='text-center'>-</div>
-                        <div className='text-end'>-</div>
-                        <div>-</div>
-                        <div className='text-center'>-</div>
-                        <div className='text-center'>-</div>
-                        <div className='text-end'>-</div>
-                        <div>-</div>
-                        <div className='text-center'>-</div>
-                        <div className='text-center'>-</div>
-                        <div className='text-end'>-</div>
+                        <div className='bg-white'>-</div>
+                        <div className='text-center bg-white'>-</div>
+                        <div className='text-center bg-white'>-</div>
+                        <div className='text-end bg-white'>-</div>
+                        <div className='bg-white'>-</div>
+                        <div className='text-center bg-white'>-</div>
+                        <div className='text-center bg-white'>-</div>
+                        <div className='text-end bg-white'>-</div>
+                        <div className='bg-white'>-</div>
+                        <div className='text-center bg-white'>-</div>
+                        <div className='text-center bg-white'>-</div>
+                        <div className='text-end bg-white'>-</div>
                     </>
                 ) : null}
-                <div>私の成績：</div>
+                <strong className='bg-white'>私の成績：</strong>
                 {myData ? (
                     <>
-                        <div className='text-center'>{myData.corrected}</div>
-                        <div className='text-center'>{myData.time}</div>
-                        <div className='text-end'>{myData.result}</div>
+                        <div className='text-center bg-white'>{myData.corrected}</div>
+                        <div className='text-center bg-white'>{myData.time}</div>
+                        <div className='text-end bg-white'>{myData.result}</div>
                     </>
                 ) : (
                     <>
-                        <div className='text-center'>-</div>
-                        <div className='text-center'>-</div>
-                        <div className='text-end'>-</div>
+                        <div className='text-center bg-white'>-</div>
+                        <div className='text-center bg-white'>-</div>
+                        <div className='text-end bg-white'>-</div>
                     </>
                 )}
 

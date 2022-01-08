@@ -14,7 +14,7 @@ export default function QuizInfor({ quizID, active, title, content, time, create
       <div>
         <p className="text-xl">{content}</p>
       </div>
-      <div className='grid grid-infor'>
+      <div className='grid grid-infor h-full text-sm'>
         <strong className="">作成日：</strong>
         <strong className='text-end'>{create_date}</strong>
         <strong className="">終了日：</strong>
@@ -24,8 +24,8 @@ export default function QuizInfor({ quizID, active, title, content, time, create
         <strong className="">点数：</strong>
         <strong className='text-end'>{score}</strong>
       </div>
-      <div>
-        {active === 1 ? (<Button className="h-full" variant="primary" href={`${ROUTES.QUIZ}/do/${quizID}`}>クイズ実行</Button>) : (<div> </div>)}
+      <div className="h-full">
+        {active === 1 ? (<Button size="sm" variant="primary" href={`${ROUTES.QUIZ}/do/${quizID}`}>クイズ実行</Button>) : (<div> </div>)}
       </div>
     </div>
   );
