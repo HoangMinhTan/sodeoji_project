@@ -8,6 +8,8 @@ import Dialog from '@material-ui/core/Dialog';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import { withStyles } from '@material-ui/core/styles';
 import MakeQuiz from './MakeQuiz';
+
+import ReactPaginate from 'react-paginate';
 var stt=1;
 
 const DialogActions = withStyles((theme) => ({
@@ -23,6 +25,27 @@ export default function Quizz() {
     const [quizz, setQuizz] = useState([]);
     const { database } = useContext(FirebaseContext);
     const [open, setOpen] = useState(false);
+
+    //Pagination
+    const itemsPerPage = 9;
+    const [currentItems, setCurrentItems] = useState(null);
+    const [pageCount, setPageCount] = useState(0);
+    const [itemOffset, setItemOffset] = useState(0);
+
+    useEffect(() => {
+        const endOffset = itemOffset + itemsPerPage;
+        console.log(`Loading items from ${itemOffset} to ${endOffset}`);
+        setCurrentItems(quizz.slice(itemOffset, endOffset));
+        setPageCount(Math.ceil(quizz.length / itemsPerPage));
+      }, [itemOffset, itemsPerPage, quizz]);
+
+    const handlePageClick = (event) => {
+        const newOffset = (event.selected * itemsPerPage) % quizz.length;
+        console.log(
+            `User requested page number ${event.selected}, which is offset ${newOffset}`
+        );
+        setItemOffset(newOffset);
+    };
 
     const handleStop = async (e) => {
         await database.ref('Quizs').child(e.target.value).update({active: 0});
@@ -86,10 +109,10 @@ export default function Quizz() {
                         </tr>
                     </thead>
                     <tbody>
-                        {quizz?
-                            quizz.map((e, i)=> <>
+                        {currentItems?
+                            currentItems.map((e, i)=> <>
                                 <tr>
-                                    <td>{i+1}</td>
+                                    <td>{itemOffset+i+1}</td>
                                     <td>{e.val.title}</td>
                                     <td>{e.val.time}</td>
                                     <td>{e.val.end_date}</td>
@@ -102,6 +125,27 @@ export default function Quizz() {
                         : null}
                     </tbody>
                 </table>
+                <div className='d-flex flex-row-reverse'>
+                    <ReactPaginate
+                        breakLabel="..."
+                        nextLabel="next >"
+                        onPageChange={handlePageClick}
+                        pageRangeDisplayed={5}
+                        pageCount={pageCount}
+                        previousLabel="< previous"
+                        renderOnZeroPageCount={null}
+                        pageClassName="page-item"
+                        pageLinkClassName="page-link"
+                        previousClassName="page-item"
+                        previousLinkClassName="page-link"
+                        nextClassName="page-item"
+                        nextLinkClassName="page-link"
+                        breakClassName="page-item"
+                        breakLinkClassName="page-link"
+                        containerClassName="pagination"
+                        activeClassName="active"
+                    />
+                </div> 
                 
             </div>
         </div>
