@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Header from '../components/header';
 import useUser from '../hooks/use-user';
 import Quizz from '../components/admin/Quizz';
+import User from '../components/admin/User';
 import LoggedInUserContext from '../context/logged-in-user';
 import Sidebar from '../components/admin/sidebar'
 import { useParams } from "react-router-dom";
@@ -26,7 +27,7 @@ export default function Dashboard({ user: loggedInUser }) {
           }
           {!type  &&
             <div>
-            day la user
+            <User />
             </div> 
           }
         </div>

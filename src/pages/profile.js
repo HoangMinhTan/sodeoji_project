@@ -36,7 +36,7 @@ export default function Profile() {
 
 
 
-    console.log(username);
+    //console.log(username);
 
     document.title = 'プロフィール';
 
@@ -75,15 +75,22 @@ export default function Profile() {
 
       var countJoin = 0;
       var countScore = 0;
+      //console.log(qSList);
       for (var i = 0; i < qSList.length; i += 1){
         if (qSList[i].done_user != ""){
-          var keys = Object.keys(qSList[i].done_user);
-          if (username in keys){
-            countJoin += 1;
-            countScore += qSList[i].done_user.username.result;
+          var x = qSList[i].done_user;
+          var key = Object.keys(qSList[i].done_user);
+          //console.log(key);
+          for (var j = 0; j < key.length; j++){
+            if (key[j] == username){
+              countJoin += 1;
+              //console.log(x[username]);
+              countScore += x[username].result;
+            }
           }
         }
       }
+      //console.log(countJoin, countScore);
       setJoin(countJoin);
       setScore(countScore);
     }

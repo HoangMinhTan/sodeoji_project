@@ -3,6 +3,8 @@ import { Link, useHistory } from 'react-router-dom';
 import FirebaseContext from '../context/firebase';
 import * as ROUTES from '../constants/routes';
 import useAuthListener from '../hooks/use-auth-listener';
+import { database } from '../lib/firebase';
+import { snapshotToArray } from '../services/firebase';
 
 export default function Login() {
   const history = useHistory();
@@ -16,22 +18,44 @@ export default function Login() {
   const [error, setError] = useState('');
   const isInvalid = password === '' || username === '';
 
+  const [current_user, setCurrentUser] = useState(null);
+
   const handleLogin = async (event) => {
     event.preventDefault();
 
     try {
       await firebase.auth().signInWithEmailAndPassword(username + '@gmail.com', password);
-      history.push('/');
+      //console.log(user.user);
+      var postList;
+      await database.ref(`Users`).once('value', snapshot => {
+        if (snapshot.exists()) {
+          postList = snapshotToArray(snapshot);
+        }
+      });
+      for (var i = 0; i < postList.length; i += 1){
+        if (postList[i].username == username){
+          setCurrentUser(postList[i]);
+        }
+      }
+      //console.log(current_user.status);
     } catch (error) {
-      serUsername('');
-      setPassword('');
+      //serUsername('');
+      //setPassword('');
+      setCurrentUser(null);
       setError("このアカウントがない！");
     }
   };
 
   useEffect(() => {
     if (user.user!=null){
-      history.push('/');
+      if (current_user != null){
+        if (current_user.status == 1){
+          history.push('/');
+        }
+        else{
+          setError('アカウントはロックされています!');
+        }
+      }
     }
     document.title = 'ログイン';
   },[user]);
