@@ -83,10 +83,13 @@ export default function User() {
             .once("value");
         var result= [];
         if (snapshot.exists()){
-            Object.keys(snapshot.val()).forEach(key => { result.push({
-                id: key,
-                val: snapshot.val()[key],
-            })
+            Object.keys(snapshot.val()).forEach(key => {
+              if (snapshot.val()[key].username != 'admin'){
+                result.push({
+                  id: key,
+                  val: snapshot.val()[key],
+                })
+              } 
         });
         setData(result);
         } 
@@ -217,7 +220,7 @@ export default function User() {
     <div className="m-4 pt-4 rounded bg-white h-screen w-full border-success border flex flex-col items-center sticky">
       <div className="m5 row w-90">
         <div className='col-md-7'></div>
-        <div className="col-md-5">
+        <div className="col-md-5">       
           <input
             style={{marginRight: 50 + 'px'}}
             type="text"
@@ -226,17 +229,8 @@ export default function User() {
             name="username"
             placeholder="検索"
             onChange={(e) => setValue(e.target.value)}
+            onKeyPress={(e) => {if (e.key == "Enter"){handleSearch(e)}}}
           ></input>
-          <button style={{backgroundColor: 'green', 
-                          color: 'white', 
-                          position: 'absolute', 
-                          top: 25 + 'px',
-                          right: 5 + 'px',
-                          padding: 6 + 'px',
-                          borderRadius: 3 + 'px'
-                        }}
-                  onClick={handleSearch}
-        >Search</button>
         </div>
         <table className={search_table}>
           <thead>
