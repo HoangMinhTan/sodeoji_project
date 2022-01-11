@@ -6,7 +6,7 @@ import { KeyboardDatePicker, MuiPickersUtilsProvider  } from "@material-ui/picke
 import DateFnsUtils from '@date-io/date-fns';
 
 
-export default function MakeQuiz({ type, id, handleClose }) {
+export default function MakeQuiz({ type, data, handleClose }) {
     const { user: loggedInUser } = useContext(UserContext);
     const { user } = useUser(loggedInUser?.uid);
     const [title, setTitle] = useState('');
@@ -20,6 +20,7 @@ export default function MakeQuiz({ type, id, handleClose }) {
     const [answer, setAnswer] = useState([]);
     const today = new Date();
     const [question, setQuestion] = useState([]);
+    const [key,setKey] = useState([]);
 
 
     const addQuestion = (type, i, value) => {
@@ -135,7 +136,13 @@ export default function MakeQuiz({ type, id, handleClose }) {
     const inputArr = [
         {
           type: "text"
-        }
+        },
+        {
+            type: "text"
+          },
+          {
+            type: "text"
+          }
       ];
     const [arr, setArr] = useState(inputArr);
 
@@ -163,30 +170,35 @@ export default function MakeQuiz({ type, id, handleClose }) {
     };
     const isInvalid = explain === '' && title === '';
 
-    // useEffect(() => {
-    //     if (post) {
-    //         setTitle(post.title);
-    //         setContent(post.content);
-    //         setImgSrc(post.image_url);
-    //         setFileSrc(post.file_url);
-    //         setFileName(post.file_name);
-    //     }
-    // }, [])
+    useEffect(() => {
+        if (data) {
+            console.log(data.val());
+            setTitle(data.val().title);
+            setTime(data.val().time);
+            setScore(data.val().score);
+            handleDateChange(new Date(data.val().end_date.replaceAll('/', '-')));
+            setKey(Object.keys(data.val().questions));
+            console.log(data.val().questions['question'+1].question);
+        }
+    }, [data])
 
     const handleUpdate = async (event) => {
-        // event.preventDefault();
-        // await database
-        //     .ref('Posts')
-        //     .child(post.key)
-        //     .update({
-        //         content: content,
-        //         create_date: Date.now(),
-        //         image_url: imgSrc,
-        //         file_name: fileName,
-        //         file_url: fileSrc,
-        //         title: title,
-        //     });
-        // window.location.reload();
+        event.preventDefault();
+        await database
+            .ref('Quizs')
+            .child(data.key)
+            .update({
+                active: active,
+                create_date: convertDate(today),
+                done_user: '',
+                end_date: convertDate(selectedDate),
+                questions: question,
+                score: score,
+                time: time,
+                title: title
+            });
+            
+        handleClose();
     };
 
     const handlePost = async (event) => {
@@ -251,6 +263,7 @@ export default function MakeQuiz({ type, id, handleClose }) {
                     タイトル:
                     <input
                         type="text"
+                        value={title}
                         className="form-control text-sm text-gray-base w-full mr-3  px-4  border border-gray-primary rounded mb-2"
                         onChange={({ target }) => setTitle(target.value)}
                     />
@@ -260,6 +273,7 @@ export default function MakeQuiz({ type, id, handleClose }) {
                     時間:
                     <input
                         type="number"
+                        value={time}
                         className="form-control text-sm text-gray-base w-50 mr-3  px-4  border border-gray-primary rounded mb-2"
                         onChange={({ target }) => setTime(target.value)}
                     />
@@ -268,13 +282,17 @@ export default function MakeQuiz({ type, id, handleClose }) {
                     クイズの点数:
                     <input
                         type="number"
+                        value={score}
                         className="form-control text-sm text-gray-base w-50 mr-3  px-4  border border-gray-primary rounded mb-2"
                         onChange={({ target }) => setScore(target.value)}
                     />
                 </label>
                 <label className="h5">
                     状態:
-                    <select class="form-select" aria-label="Default select example" onChange={({ target }) => setActive(target.value)}>
+                    <select class="form-select" aria-label="Default select example"
+                    
+                        value={data?.val().active}
+                        onChange={({ target }) => setActive(target.value)}>
                     <option selected value="1" className='text-success'>アクティブ</option>
                     <option value="0" className='text-danger'>ストップ</option>
                     </select>
@@ -302,9 +320,10 @@ export default function MakeQuiz({ type, id, handleClose }) {
                             <>
                             <hr className='mb-2'/>
                             <label className="h3 fw-bold">
-                                質問:
+                                {`質問`+(i+1)+`:`}
                                 <input
                                     type="text"
+                                    value={data?.val().questions['question'+(i+1)]?.question}
                                     className="form-control text-sm text-gray-base w-full mr-3  px-4  border border-gray-primary rounded mb-2"
                                     onChange={({ target }) => addQuestion('question',i, target.value)}
                                 />
@@ -315,6 +334,7 @@ export default function MakeQuiz({ type, id, handleClose }) {
                                         A:
                                         <input
                                             type="text"
+                                            value={data?.val().questions['question'+(i+1)]?.answer.A}
                                             className="form-control text-sm text-gray-base w-full mr-3  px-4  border border-gray-primary rounded mb-2"
                                             onChange={({ target }) => addQuestion('A',i, target.value)}
                                         />
@@ -325,6 +345,7 @@ export default function MakeQuiz({ type, id, handleClose }) {
                                         B:
                                         <input
                                             type="text"
+                                            value={data?.val().questions['question'+(i+1)]?.answer.B}
                                             className="form-control text-sm text-gray-base w-full mr-3  px-4  border border-gray-primary rounded mb-2"
                                             onChange={({ target }) => addQuestion('B', i, target.value)}
                                         />
@@ -335,6 +356,7 @@ export default function MakeQuiz({ type, id, handleClose }) {
                                         C:
                                         <input
                                             type="text"
+                                            value={data?.val().questions['question'+(i+1)]?.answer.C}
                                             className="form-control text-sm text-gray-base w-full mr-3  px-4  border border-gray-primary rounded mb-2"
                                             onChange={({ target }) => addQuestion('C', i, target.value)}
                                         />
@@ -343,7 +365,9 @@ export default function MakeQuiz({ type, id, handleClose }) {
                             </div>
                             <label className="h5">
                                 正解:
-                                <select class="form-select w-20" aria-label="Default select example" onChange={({ target }) => addQuestion('right_answer',i,target.value)}>
+                                <select class="form-select w-20" aria-label="Default select example" 
+                                    value={data?.val().questions['question'+(i+1)]?.right_answer}
+                                    onChange={({ target }) => addQuestion('right_answer',i,target.value)}>
                                 <option selected value="A" >A</option>
                                 <option value="B" >B</option>
                                 <option value="C" >C</option>
@@ -353,6 +377,7 @@ export default function MakeQuiz({ type, id, handleClose }) {
                                 説明:
                                 <textarea
                                     defaultValue={explain}
+                                    value={data?.val().questions['question'+(i+1)]?.explain}
                                     className="form-controltext-sm text-gray-base w-full mr-3 p-4 h-20 border border-gray-primary rounded mb-2"
                                     onChange={({ target }) => addQuestion('explain', i, target.value)}
                                 />
