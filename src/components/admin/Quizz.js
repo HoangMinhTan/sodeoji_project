@@ -23,8 +23,11 @@ export default function Quizz() {
     const { user: loggedInUser } = useContext(UserContext);
     const { user } = useUser(loggedInUser?.uid);
     const [quizz, setQuizz] = useState([]);
+    const [Quiz, setQuiz] = useState([]);
     const { database } = useContext(FirebaseContext);
     const [open, setOpen] = useState(false);
+    const [value, setValue] = useState();
+    const [search, setSearch] = useState();
 
     //Pagination
     const itemsPerPage = 9;
@@ -62,23 +65,36 @@ export default function Quizz() {
         setOpen(false);
     }
 
-    useEffect(() => {
-        async function getQuizz() {
-            const snapshot = await database
-                .ref('Quizs')
-                .once("value");
-            var result= [];
-            if (snapshot.exists()){
-                Object.keys(snapshot.val()).forEach(key => { result.push({
-                    id: key,
-                    val: snapshot.val()[key]
-                })
-            });
-            setQuizz(result);
-            }
+    const handleSearch = () => {
+        console.log("set search: " +value);
+        setSearch(value);
+    }
+
+
+    async function getQuizz(value) {
+        const snapshot = await database
+            .ref('Quizs')
+            .once("value");
+        var result= [];
+        if (snapshot.exists()){
+            Object.keys(snapshot.val()).forEach(key => { result.push({
+                id: key,
+                val: snapshot.val()[key]
+            })
+        });
+
+        if (value) {
+            result = await Promise.all(result.filter((item) => {
+                return (value === item.val.title)
+              }));
         }
-        getQuizz();
-    }, [quizz]);
+        setQuizz(result);
+        }
+    }
+
+    useEffect(() => {
+        getQuizz(search);
+    }, [quizz, search]);
     return (
         <div className="m-4 pt-4 rounded bg-white h-screen w-full border-success border flex flex-col items-center sticky">
             
@@ -92,7 +108,19 @@ export default function Quizz() {
                     </Dialog>
                 </div>
                 <div className='col-md-5'>
-                    <input type="text" class="form-control" id="search_quizz" name="username" placeholder='検索'></input>
+                    <input type="text" class="form-control" id="search_quizz" name="username" placeholder='検索' onChange={(e) => setValue(e.target.value)}></input>
+                    <button style={{backgroundColor: 'green', 
+                          color: 'white', 
+                          position: 'absolute', 
+                          top: 25 + 'px',
+                          right: 5 + 'px',
+                          padding: 6 + 'px',
+                          borderRadius: 3 + 'px'
+                        }}
+                        onClick={handleSearch}
+                    >
+                        Search
+                    </button>
                 </div>
 
                 <table className="mt-4 table table-hover text-center">
