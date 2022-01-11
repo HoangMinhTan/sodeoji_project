@@ -8,6 +8,7 @@ import Dialog from '@material-ui/core/Dialog';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import { withStyles } from '@material-ui/core/styles';
 import MakeQuiz from './MakeQuiz';
+import { snapshotToArray } from '../../services/firebase';
 
 import ReactPaginate from 'react-paginate';
 var stt=1;
@@ -26,6 +27,8 @@ export default function Quizz() {
     const [Quiz, setQuiz] = useState([]);
     const { database } = useContext(FirebaseContext);
     const [open, setOpen] = useState(false);
+    const [open1, setOpen1] = useState(false);
+    const [data, setData] = useState();
     const [value, setValue] = useState();
     const [search, setSearch] = useState();
 
@@ -57,12 +60,31 @@ export default function Quizz() {
         await database.ref('Quizs').child(e.target.value).update({active: 1});
     }
 
+    const handleChange = async (e) => {
+        const snapshot = await database.ref('Quizs').child(e.target.value).once('value');
+        if (snapshot.exists()){
+            setData(snapshot);
+            handleClickOpen1();
+        }
+
+    }
+    const handleDelete = async (e) => {
+        await database.ref('Quizs').child(e.target.value).remove();
+    }
+
     const handleClickOpen = () => {
         setOpen(true);
     }
 
     const handleClose = () => { 
         setOpen(false);
+    }
+    const handleClickOpen1 = () => {
+        setOpen1(true);
+    }
+
+    const handleClose1 = () => { 
+        setOpen1(false);
     }
 
     const handleSearch = () => {
@@ -106,6 +128,11 @@ export default function Quizz() {
                             <MakeQuiz type="作成" handleClose={handleClose} />
                         </DialogActions>
                     </Dialog>
+                    <Dialog open={open1} maxWidth={'xl'} fullWidth={true}>
+                        <DialogActions>
+                            <MakeQuiz type="編集" data={data} handleClose={handleClose1} />
+                        </DialogActions>
+                    </Dialog>
                 </div>
                 <div className='col-md-5'>
                     <input type="text" class="form-control" id="search_quizz" name="username" placeholder='検索' onChange={(e) => setValue(e.target.value)}></input>
@@ -134,6 +161,8 @@ export default function Quizz() {
                             <th>状態</th>
                             <th></th>
                             <th></th>
+                            <th></th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -142,12 +171,14 @@ export default function Quizz() {
                                 <tr>
                                     <td>{itemOffset+i+1}</td>
                                     <td>{e.val.title}</td>
-                                    <td>{e.val.time}</td>
+                                    <td>{new Date(e.val.time * 1000).toISOString().substr(14, 5)}</td>
                                     <td>{e.val.end_date}</td>
                                     <td>{Object.keys(e.val.done_user).length}</td>
                                     {e.val.active==1? <td className='text-success'>アクティブ</td>: <td className='text-danger'> ストップ</td>}
                                     <td><button type="button" class="btn btn-danger" onClick={handleStop} value={e.id}>ストップ</button></td>
                                     <td><button type="button" class="btn btn-success" onClick={handleActive} value={e.id}>アクティブ</button></td>
+                                    <td><button type="button" class="btn btn-primary" onClick={handleChange} value={e.id}>編集</button></td>
+                                    <td><button type="button" class="btn btn-primary" onClick={handleDelete} value={e.id}>削除</button></td>
                                 </tr>
                             </>)
                         : null}
