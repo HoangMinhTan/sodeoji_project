@@ -87,7 +87,7 @@ export default function Quizz() {
         setOpen1(false);
     }
 
-    const handleSearch = () => {
+    const handleSearch = (e) => {
         console.log("set search: " +value);
         setSearch(value);
     }
@@ -135,19 +135,16 @@ export default function Quizz() {
                     </Dialog>
                 </div>
                 <div className='col-md-5'>
-                    <input type="text" class="form-control" id="search_quizz" name="username" placeholder='検索' onChange={(e) => setValue(e.target.value)}></input>
-                    <button style={{backgroundColor: 'green', 
-                          color: 'white', 
-                          position: 'absolute', 
-                          top: 25 + 'px',
-                          right: 5 + 'px',
-                          padding: 6 + 'px',
-                          borderRadius: 3 + 'px'
-                        }}
-                        onClick={handleSearch}
-                    >
-                        Search
-                    </button>
+                    <input 
+                        type="text"
+                        class="form-control"
+                        id="search_quizz" 
+                        name="username" 
+                        placeholder='検索' 
+                        onChange={(e) => setValue(e.target.value)}
+                        onKeyPress={(e) => {if (e.key == "Enter"){handleSearch(e)}}}
+                    ></input>
+                    
                 </div>
 
                 <table className="mt-4 table table-hover text-center">
