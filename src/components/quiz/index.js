@@ -19,13 +19,13 @@ export default function Quizs({ type, param2 }) {
                     <Skeleton count={2} height={500} className="mb-5" />
                 </div>
             ) : type && type === "do" ? (
-                <div className="container" style={{marginTop: '10%', height: '50%'}}>
+                <div className="container min-height-quiz-do" style={{marginTop: '10%', height: '50%'}}>
                     <QuizDo content={quizs[0]} />
                 </div>
             ) : (
                 quizs.map((quiz) => {
                     return (
-                        <div className="container mb-12" style={{height: '10%'}}>
+                        <div className="container mb-12 min-height-quiz-present" style={{height: '10%'}}>
                             <Quiz content={quiz} />
                         </div>
                     )

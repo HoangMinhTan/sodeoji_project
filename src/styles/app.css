@@ -1217,6 +1217,14 @@ button:hover {
   min-width: 500px;
 }
 
+.min-height-quiz-present {
+  min-height: 250px;
+}
+
+.min-height-quiz-do {
+  min-height: 450px;
+}
+
 @media (min-width: 640px) {
 }
 
