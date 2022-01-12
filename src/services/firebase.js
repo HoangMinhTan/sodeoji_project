@@ -46,13 +46,13 @@ export async function getUserByUserId(userId) {
   return result;
 }
 
-export async function getPosts(type, param2, user) {
+export async function getPosts(type, param2, search, user) {
   const snapshot = await database
     .ref('Posts')
     .once("value");
 
   var result = snapshotToArray(snapshot);
-  console.log(result);
+  // console.log(result);
   switch (type) {
     case "post-details":
       result = await Promise.all(result.filter((item) => {
@@ -78,6 +78,12 @@ export async function getPosts(type, param2, user) {
         return (user?.group === item.group || item.active === "all")
       }));
       break;
+  }
+
+  if (search !== "") {
+    result = await Promise.all(result.filter((item) => {
+      return (item.title.includes(search));
+    }));
   }
 
   return result;
