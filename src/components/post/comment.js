@@ -29,14 +29,14 @@ const Comment = ({
 
     // console.log(replies);
     const getReplies = (commentId) => {
-        if (data) return data
+        if (data) return (data
             .filter(data => data.parentId === commentId)
             .sort(
                 (a, b) => {
                     if (b.vote_numbers !== a.vote_numbers) return b.vote_numbers - a.vote_numbers;
                     else return new Date(a.create_date).getTime() - new Date(b.create_date).getTime();
                 }
-            );
+            ));
     };
 
     return (

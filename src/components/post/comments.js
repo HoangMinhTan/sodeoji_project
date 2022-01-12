@@ -13,8 +13,19 @@ export default function Comments({ postId, user }) {
   const [rootComments, setRootComments] = useState(null);
 
   const getReplies = (commentId) => {
-    return (backendComments
+    // console.log(backendComments);
+    if (backendComments) return (backendComments
       .filter(backendComment => backendComment.parentId === commentId)
+      .sort(
+        (a, b) => {
+          if (b.vote_numbers !== a.vote_numbers) return b.vote_numbers - a.vote_numbers;
+          else return new Date(a.create_date).getTime() - new Date(b.create_date).getTime();
+        }
+      ));
+  };
+
+  const getSortCom = () => {
+    if (rootComments) return (rootComments
       .sort(
         (a, b) => {
           if (b.vote_numbers !== a.vote_numbers) return b.vote_numbers - a.vote_numbers;
@@ -139,7 +150,7 @@ export default function Comments({ postId, user }) {
     <div className="comments">
       <h3 className="comments-title">コメントのリスト</h3>
       <div className="comments-container">
-        {rootComments != null ? (rootComments.map((rootComment) => (
+        {rootComments?.length > 0 ? (getSortCom().map((rootComment) => (
           <Comment
             data={backendComments}
             key={rootComment?.id}
