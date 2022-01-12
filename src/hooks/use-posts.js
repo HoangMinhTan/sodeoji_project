@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { getPosts } from '../services/firebase';
 
-export default function usePosts(type, param2, user) {
+export default function usePosts(type, param2, search, user) {
   const [posts, setPosts] = useState(null);
 
   useEffect(() => {
     async function getTimelinePosts() {
-      const PostList = await getPosts(type, param2, user);
+      const PostList = await getPosts(type, param2, search, user);
       PostList.sort((a, b) => {
         if (b.vote_numbers !== a.vote_numbers) return b.vote_numbers - a.vote_numbers;
         return a.create_date - b.create_date;
@@ -15,7 +15,7 @@ export default function usePosts(type, param2, user) {
     }
 
     getTimelinePosts();
-  }, [posts?.length]);
+  }, [posts?.length, search]);
 
   return { posts };
 }
