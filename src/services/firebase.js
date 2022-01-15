@@ -1,4 +1,5 @@
 import { firebase, database, storage } from '../lib/firebase';
+import { nonAccentVietnamese } from '../helpers/Vietnamese-converter';
 
 export function snapshotToArray(snapshot) {
   var returnArr = [];
@@ -82,7 +83,7 @@ export async function getPosts(type, param2, search, user) {
 
   if (search !== "") {
     result = await Promise.all(result.filter((item) => {
-      return (item.title.includes(search));
+      return (nonAccentVietnamese(item.title).toLowerCase().includes(nonAccentVietnamese(search).toLowerCase()));
     }));
   }
 

@@ -87,17 +87,17 @@ export default function Sidebar() {
                     </Navbar>
                     <Navbar bg="primary" className="bg-blue-medium mx-auto w-full mt-2">
                         <Container className="flex flex-col justify-center items-center">
-                            <Navbar.Brand className="text-white text-xl" href={ROUTES.QUIZ_OPENNING}>オープニング</Navbar.Brand>
+                            <Navbar.Brand className="text-white text-xl" href={ROUTES.QUIZ_OPENNING}>利用可能</Navbar.Brand>
                         </Container>
                     </Navbar>
                     <Navbar bg="primary" className="bg-blue-medium mx-auto w-full mt-4">
                         <Container className="flex flex-col justify-center items-center">
-                            <Navbar.Brand className="text-white text-xl" href={ROUTES.QUIZ_CLOSE}>終わった</Navbar.Brand>
+                            <Navbar.Brand className="text-white text-xl" href={ROUTES.QUIZ_CLOSE}>利用終了</Navbar.Brand>
                         </Container>
                     </Navbar>
                     <Navbar bg="primary" className="bg-blue-medium mx-auto w-full mt-4">
                         <Container className="flex flex-col justify-center items-center">
-                            <Navbar.Brand className="text-white text-xl" href={`/quiz/done/${user?.username}`}>完了</Navbar.Brand>
+                            <Navbar.Brand className="text-white text-xl" href={`/quiz/done/${user?.username}`}>実施済</Navbar.Brand>
                         </Container>
                     </Navbar>
                 </>
