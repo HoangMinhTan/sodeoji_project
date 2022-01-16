@@ -171,9 +171,15 @@ export default function Quizz() {
                                     <td>{new Date(e.val.time * 1000).toISOString().substr(14, 5)}</td>
                                     <td>{e.val.end_date}</td>
                                     <td>{Object.keys(e.val.done_user).length}</td>
-                                    {e.val.active==1? <td className='text-success'>アクティブ</td>: <td className='text-danger'> ストップ</td>}
+                                    {e.val.active==1? 
+                                    <>
+                                    <td className='text-success'>アクティブ</td>
                                     <td><button type="button" class="btn btn-danger" onClick={handleStop} value={e.id}>ストップ</button></td>
+                                    </>
+                                    : <>
+                                    <td className='text-danger'> ストップ</td>
                                     <td><button type="button" class="btn btn-success" onClick={handleActive} value={e.id}>アクティブ</button></td>
+                                    </>}
                                     <td><button type="button" class="btn btn-primary" onClick={handleChange} value={e.id}>編集</button></td>
                                     <td><button type="button" class="btn btn-primary" onClick={handleDelete} value={e.id}>削除</button></td>
                                 </tr>

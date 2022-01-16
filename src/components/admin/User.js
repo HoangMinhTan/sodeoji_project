@@ -124,12 +124,6 @@ export default function User() {
                   <td> {e.val.username}</td>
                   <td> {e.val.group} </td>
                   <td> {score}</td>
-                  <td className="text-danger"> 禁止</td>
-                  <td>
-                    <button type="button" class="btn btn-danger" onClick={()=>handleLock(e.val, e.id)}>
-                      禁止
-                    </button>
-                  </td>
                   <td>
                     <button type="button" class="btn btn-success" onClick={()=>handleUnLock(e.val, e.id)}>
                       アクティブ
@@ -144,16 +138,10 @@ export default function User() {
               <td> {itemOffset+i+1}</td>
               <td> {e.val.username}</td>
               <td> {e.val.group} </td>
-              <td> {score}</td>
-              <td className="text-success"> アクティブ</td>
+              <td> {score}</td>             
               <td>
                 <button type="button" class="btn btn-danger" onClick={()=>handleLock(e.val, e.id)}>
-                  禁止
-                </button>
-              </td>
-              <td>
-                <button type="button" class="btn btn-success" onClick={()=>handleUnLock(e.val, e.id)}>
-                  アクティブ
+                無効する
                 </button>
               </td>
             </tr>
@@ -178,12 +166,6 @@ export default function User() {
                 <td> {e.val.username}</td>
                 <td> {e.val.group} </td>
                 <td> {score}</td>
-                <td className="text-danger"> 禁止</td>
-                <td>
-                  <button type="button" class="btn btn-danger" onClick={()=>handleLock(e.val, e.id)}>
-                    禁止
-                  </button>
-                </td>
                 <td>
                   <button type="button" class="btn btn-success" onClick={()=>handleUnLock(e.val, e.id)}>
                     アクティブ
@@ -198,16 +180,10 @@ export default function User() {
             <td> {i+1}</td>
             <td> {e.val.username}</td>
             <td> {e.val.group} </td>
-            <td> {score}</td>
-            <td className="text-success"> アクティブ</td>
+            <td> {score}</td>            
             <td>
               <button type="button" class="btn btn-danger" onClick={()=>handleLock(e.val, e.id)}>
-                禁止
-              </button>
-            </td>
-            <td>
-              <button type="button" class="btn btn-success" onClick={()=>handleUnLock(e.val, e.id)}>
-                アクティブ
+              無効する
               </button>
             </td>
           </tr>
@@ -239,7 +215,6 @@ export default function User() {
               <th>ユーザ名 </th>
               <th>グループ</th>
               <th>ポイント</th>
-              <th>状態</th>
               <th></th>
               <th></th>
             </tr>
@@ -257,7 +232,7 @@ export default function User() {
               <th>ユーザ名 </th>
               <th>グループ</th>
               <th>ポイント</th>
-              <th>状態</th>
+              <th></th>
               <th></th>
               <th></th>
             </tr>
