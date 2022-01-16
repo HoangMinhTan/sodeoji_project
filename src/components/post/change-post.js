@@ -19,8 +19,6 @@ export default function ChangePost({ type, post, handleClose }) {
     const [active, setActive] = useState('group');
     const { database, storage } = useContext(FirebaseContext);
 
-    const isInvalid = content === '' && title === '';
-
     useEffect(() => {
         if (post) {
             setTitle(post.title);
@@ -201,9 +199,9 @@ export default function ChangePost({ type, post, handleClose }) {
                 </div>
                 <label>
                     表示:
-                    <select class="form-select mb-2" aria-label="Default select example" defaultValue={active}  onChange={({ target }) => setActive(target.value)}>
-                    <option value="all">全部グループ</option>
-                    <option value="group">ユーザーのグループ</option>
+                    <select class="form-select mb-2" aria-label="Default select example" defaultValue={active} onChange={({ target }) => setActive(target.value)}>
+                        <option value="all">全部グループ</option>
+                        <option value="group">ユーザーのグループ</option>
                     </select>
                 </label>
 
@@ -225,8 +223,8 @@ export default function ChangePost({ type, post, handleClose }) {
                     />
                 </label>
                 <div>
-                    <button className={`bg-blue-medium text-white w-45 rounded h-8 font-bold ${isInvalid && 'opacity-50'} `}
-                        disabled={isInvalid}
+                    <button className={`bg-blue-medium text-white w-45 rounded h-8 font-bold ${(content === '' || title === '') && 'opacity-50'} `}
+                        disabled={content === '' || title === ''}
                         onClick={type === "編集" ? (handleUpdate) : (handlePost)}> {type}
                     </button>
                     <a className={`pt-1`}> </a>

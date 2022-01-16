@@ -15,7 +15,7 @@ export default function usePosts(type, param2, search, user) {
     }
 
     getTimelinePosts();
-  }, [posts?.length, search]);
+  }, [user, search, posts?.length]);
 
   return { posts };
 }

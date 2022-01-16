@@ -22,8 +22,8 @@ export default function Header({ username, avatarSrc, date, content }) {
   const { database, storage } = useContext(FirebaseContext);
 
   const handleDelete = async () => {
-    await storage.refFromURL(content.file_url).delete();
-    await storage.refFromURL(content.image_url).delete();
+    if (content.file_url) await storage.refFromURL(content.file_url).delete();
+    if (content.image_url) await storage.refFromURL(content.image_url).delete();
     await database.ref('Posts').child(content.key).remove();
     window.location.reload();
   };

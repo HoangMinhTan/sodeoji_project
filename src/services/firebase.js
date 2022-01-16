@@ -52,8 +52,8 @@ export async function getPosts(type, param2, search, user) {
     .ref('Posts')
     .once("value");
 
-  var result = snapshotToArray(snapshot);
-  // console.log(result);
+  var result = await Promise.all(snapshotToArray(snapshot));
+
   switch (type) {
     case "post-details":
       result = await Promise.all(result.filter((item) => {
@@ -81,7 +81,7 @@ export async function getPosts(type, param2, search, user) {
       break;
   }
 
-  if (search !== "") {
+  if (search && search !== "") {
     result = await Promise.all(result.filter((item) => {
       return (nonAccentVietnamese(item.title).toLowerCase().includes(nonAccentVietnamese(search).toLowerCase()));
     }));
@@ -182,5 +182,21 @@ export async function getQuizs(type, param2) {
       break;
   }
 
+  return result;
+}
+
+export async function getUserPostLength(user) {
+  const snapshot = await database
+    .ref('Posts')
+    .once("value");
+
+  var result = await Promise.all(snapshotToArray(snapshot));
+  console.log(result, user);
+
+  result = await Promise.all(result.filter((item) => {
+    return (user?.username === item.author)
+  }));
+  console.log(result);
+  
   return result;
 }
