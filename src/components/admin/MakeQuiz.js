@@ -17,10 +17,8 @@ export default function MakeQuiz({ type, data, handleClose }) {
     const [explain, setExplain] = useState('');
     const { database, storage } = useContext(FirebaseContext);
     const [selectedDate, handleDateChange] = useState(new Date());
-    const [answer, setAnswer] = useState([]);
     const today = new Date();
     const [question, setQuestion] = useState([]);
-    const [key,setKey] = useState([]);
 
 
     const addQuestion = (type, i, value) => {
@@ -39,7 +37,7 @@ export default function MakeQuiz({ type, data, handleClose }) {
                     };
                     return s;
                 });
-                console.log(question);
+                // console.log(question);
                 break;
             case 'A':
                 setQuestion((s) => {
@@ -55,7 +53,7 @@ export default function MakeQuiz({ type, data, handleClose }) {
                     };
                     return s;
                 });
-                console.log(question);
+                // console.log(question);
                 break;
             case 'B':
                 setQuestion((s) => {
@@ -71,7 +69,7 @@ export default function MakeQuiz({ type, data, handleClose }) {
                     };
                     return s;
                 });
-                console.log(question);
+                // console.log(question);
                 break;
             case 'C':
                 setQuestion((s) => {
@@ -87,7 +85,7 @@ export default function MakeQuiz({ type, data, handleClose }) {
                     };
                     return s;
                 });
-                console.log(question);
+                // console.log(question);
                 break;
             case 'right_answer':
                 setQuestion((s) => {
@@ -103,7 +101,7 @@ export default function MakeQuiz({ type, data, handleClose }) {
                     };
                     return s;
                 });
-                console.log(question);
+                // console.log(question);
                 break;
             default:
                 setQuestion((s) => {
@@ -119,9 +117,10 @@ export default function MakeQuiz({ type, data, handleClose }) {
                     };
                     return s;
                 });
-                console.log(question);
+                // console.log(question);
                 break;
         }
+        console.log(question);
     }
     
     function convertDate(date){
@@ -177,17 +176,33 @@ export default function MakeQuiz({ type, data, handleClose }) {
             setTime(data.val().time);
             setScore(data.val().score);
             handleDateChange(new Date(data.val().end_date.replaceAll('/', '-')));
-            setKey(Object.keys(data.val().questions));
-            console.log(data.val().questions['question'+1].question);
+            // console.log(data.val().questions['question'+1].question);
+            // console.log(Object.keys(data.val().questions).length);
+            // console.log(data.val().questions);
+            for (let i=3 ; i<Object.keys(data.val().questions).length; i++ ){
+                addInput();
+            }
+            for (const key in data.val().questions){
+                var i  = parseInt(key.slice(8))-1;
+                console.log(i, data.val().questions[key]);
+                addQuestion('question', i, data.val().questions[key].question);
+                addQuestion('A', i, data.val().questions[key].answer.A);
+                addQuestion('B', i, data.val().questions[key].answer.B);
+                addQuestion('C', i, data.val().questions[key].answer.C);
+                addQuestion('right_answer', i, data.val().questions[key].right_answer);
+                addQuestion('explain', i, data.val().questions[key].explain);
+            }
+            console.log(question);
         }
     }, [data])
 
     const handleUpdate = async (event) => {
         event.preventDefault();
+        console.log(question);
         await database
             .ref('Quizs')
             .child(data.key)
-            .update({
+            .set({
                 active: active,
                 create_date: convertDate(today),
                 done_user: '',
@@ -197,7 +212,7 @@ export default function MakeQuiz({ type, data, handleClose }) {
                 time: time,
                 title: title
             });
-            
+        
         handleClose();
     };
 
