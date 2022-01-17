@@ -1,21 +1,37 @@
 import { useState, useEffect } from 'react';
 import { getPosts } from '../services/firebase';
 
-export default function usePosts(type, param2, search, user) {
-  const [posts, setPosts] = useState(null);
+export default function usePosts(type, param2, search, sort, user) {
+  const [posts, setPosts] = useState();
 
   useEffect(() => {
     async function getTimelinePosts() {
       const PostList = await getPosts(type, param2, search, user);
-      PostList.sort((a, b) => {
-        if (b.vote_numbers !== a.vote_numbers) return b.vote_numbers - a.vote_numbers;
-        return b.create_date - a.create_date;
-      });
+      switch (sort) {
+        case 'ライクでソート':
+          PostList.sort((a, b) => {
+            return b.vote_numbers - a.vote_numbers;
+          });
+          break;
+        case '作成時間でソート':
+          PostList.sort((a, b) => {
+            return b.create_date - a.create_date;
+          });
+          break;
+        default:
+          PostList.sort((a, b) => {
+            if (b.vote_numbers !== a.vote_numbers) return b.vote_numbers - a.vote_numbers;
+            return b.create_date - a.create_date;
+          });
+          break;
+  
+      }
+
       setPosts(PostList);
     }
 
     getTimelinePosts();
-  }, [user, search, posts?.length]);
+  }, [user, search, sort, posts?.length]);
 
-  return { posts };
+  return { posts, sort };
 }
