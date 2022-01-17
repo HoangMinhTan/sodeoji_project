@@ -122,7 +122,6 @@ export default function MakeQuiz({ type, data, handleClose }) {
                 // console.log(question);
                 break;
         }
-        console.log(time);
     }
     
     function convertDate(date){
@@ -193,9 +192,6 @@ export default function MakeQuiz({ type, data, handleClose }) {
             setSecond(parseInt(data.val().time)%60);
             setScore(data.val().score);
             handleDateChange(new Date(data.val().end_date.replaceAll('/', '-')));
-            // console.log(data.val().questions['question'+1].question);
-            // console.log(Object.keys(data.val().questions).length);
-            // console.log(data.val().questions);
             for (let i=3 ; i<Object.keys(data.val().questions).length; i++ ){
                 addInput();
             }
@@ -255,29 +251,6 @@ export default function MakeQuiz({ type, data, handleClose }) {
         })
         
         handleClose();
-        // var postId = database
-        //     .ref('Posts')
-        //     .push({
-        //         postId: user?.username,
-        //         author: user?.username,
-        //         author_avatar: user?.avatar,
-        //         content: content,
-        //         create_date: Date.now(),
-        //         group: user?.group,
-        //         image_url: imgSrc,
-        //         file_name: fileName,
-        //         file_url: fileSrc,
-        //         title: title,
-        //         vote_numbers: 0
-        //     })
-        //     .key;
-        // var postRef = 'Posts/' + postId;
-        // database
-        //     .ref(postRef)
-        //     .update({
-        //         postId: postId
-        //     });
-        // window.location.reload();
     };
 
     
@@ -364,7 +337,7 @@ export default function MakeQuiz({ type, data, handleClose }) {
                                 {`質問`+(i+1)+`:`}
                                 <input
                                     type="text"
-                                    value={data?.val().questions['question'+(i+1)]?.question}
+                                    value={question['question'+(i+1)]?.question}
                                     className="form-control text-sm text-gray-base w-full mr-3  px-4  border border-gray-primary rounded mb-2"
                                     onChange={({ target }) => addQuestion('question',i, target.value)}
                                 />
@@ -375,7 +348,7 @@ export default function MakeQuiz({ type, data, handleClose }) {
                                         A:
                                         <input
                                             type="text"
-                                            value={data?.val().questions['question'+(i+1)]?.answer.A}
+                                            value={question['question'+(i+1)]?.answer.A}
                                             className="form-control text-sm text-gray-base w-full mr-3  px-4  border border-gray-primary rounded mb-2"
                                             onChange={({ target }) => addQuestion('A',i, target.value)}
                                         />
@@ -386,7 +359,7 @@ export default function MakeQuiz({ type, data, handleClose }) {
                                         B:
                                         <input
                                             type="text"
-                                            value={data?.val().questions['question'+(i+1)]?.answer.B}
+                                            value={question['question'+(i+1)]?.answer.B}
                                             className="form-control text-sm text-gray-base w-full mr-3  px-4  border border-gray-primary rounded mb-2"
                                             onChange={({ target }) => addQuestion('B', i, target.value)}
                                         />
@@ -397,7 +370,7 @@ export default function MakeQuiz({ type, data, handleClose }) {
                                         C:
                                         <input
                                             type="text"
-                                            value={data?.val().questions['question'+(i+1)]?.answer.C}
+                                            value={question['question'+(i+1)]?.answer.C}
                                             className="form-control text-sm text-gray-base w-full mr-3  px-4  border border-gray-primary rounded mb-2"
                                             onChange={({ target }) => addQuestion('C', i, target.value)}
                                         />
@@ -407,7 +380,7 @@ export default function MakeQuiz({ type, data, handleClose }) {
                             <label className="h5">
                                 正解:
                                 <select class="form-select w-20" aria-label="Default select example" 
-                                    value={data?.val().questions['question'+(i+1)]?.right_answer}
+                                    value={question['question'+(i+1)]?.right_answer}
                                     onChange={({ target }) => addQuestion('right_answer',i,target.value)}>
                                 <option selected value="A" >A</option>
                                 <option value="B" >B</option>
@@ -417,8 +390,7 @@ export default function MakeQuiz({ type, data, handleClose }) {
                             <label className="h5">
                                 説明:
                                 <textarea
-                                    defaultValue={explain}
-                                    value={data?.val().questions['question'+(i+1)]?.explain}
+                                    value={question['question'+(i+1)]?.explain}
                                     className="form-controltext-sm text-gray-base w-full mr-3 p-4 h-20 border border-gray-primary rounded mb-2"
                                     onChange={({ target }) => addQuestion('explain', i, target.value)}
                                 />
