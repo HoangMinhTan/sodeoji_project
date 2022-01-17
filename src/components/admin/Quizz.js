@@ -40,7 +40,6 @@ export default function Quizz() {
 
     useEffect(() => {
         const endOffset = itemOffset + itemsPerPage;
-        console.log(`Loading items from ${itemOffset} to ${endOffset}`);
         setCurrentItems(quizz.slice(itemOffset, endOffset));
         setPageCount(Math.ceil(quizz.length / itemsPerPage));
       }, [itemOffset, itemsPerPage, quizz]);
@@ -107,7 +106,7 @@ export default function Quizz() {
 
         if (value) {
             result = await Promise.all(result.filter((item) => {
-                return (value === item.val.title)
+                return (item.val.title.toLowerCase().includes(value.toLowerCase()))
               }));
         }
         setQuizz(result);
