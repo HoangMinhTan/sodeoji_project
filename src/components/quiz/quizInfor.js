@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
 import * as ROUTES from '../../constants/routes';
 
@@ -30,13 +29,3 @@ export default function QuizInfor({ quizID, active, title, content, time, create
     </div>
   );
 }
-
-QuizInfor.propTypes = {
-  quizID: PropTypes.string.isRequired,
-  active: PropTypes.number.isRequired,
-  title: PropTypes.string.isRequired,
-  content: PropTypes.string.isRequired,
-  time: PropTypes.number.isRequired,
-  create_date: PropTypes.number.isRequired,
-  end_date: PropTypes.number.isRequired,
-};

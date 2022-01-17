@@ -48,6 +48,24 @@ export async function getUserByUserId(userId) {
 }
 
 export async function getPosts(type, param2, search, user) {
+  var now = Date.now();
+  var cutoff = now - 6 * 30 * 24 * 60 * 60 * 1000;
+  await database
+    .ref('Posts')
+    .orderByChild('create_date')
+    .endAt(cutoff)
+    .once("value", function (snapshot) {
+      snapshot.forEach(function (child) {
+        // console.log(child.key);
+        // console.log(child.val());
+        if (child.val().file_url) storage.refFromURL(child.val().file_url).delete();
+        if (child.val().image_url) storage.refFromURL(child.val().image_url).delete();
+        database.ref('Saves').child(`${child.key}`).remove();
+        database.ref('Posts').child(child.key).remove();
+      })
+    });
+  // console.log(snapshot.val());
+
   const snapshot = await database
     .ref('Posts')
     .once("value");
@@ -191,12 +209,12 @@ export async function getUserPostLength(user) {
     .once("value");
 
   var result = await Promise.all(snapshotToArray(snapshot));
-  console.log(result, user);
+  // console.log(result, user);
 
   result = await Promise.all(result.filter((item) => {
     return (user?.username === item.author)
   }));
-  console.log(result);
-  
+  // console.log(result);
+
   return result;
 }

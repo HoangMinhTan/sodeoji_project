@@ -1082,7 +1082,7 @@ video {
 }
 
 .grid-infor-pre {
-  grid-template-rows: 15% auto 45% 10%;
+  grid-template-rows: 14% auto 45% 11%;
   grid-gap: 5px;
 }
 

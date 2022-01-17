@@ -21,9 +21,7 @@ export default function Dashboard({ user: loggedInUser }) {
         <Header />
         <div className="grid grid-cols-3-new">
           <Sidebar />
-          <div className={type === 'post-details' ? "max-w-screen-lg justify-between mx-auto" : "max-w-screen-md justify-between mx-auto"}>
-            <Timeline type={type} param2={param2}/>
-          </div>
+          <Timeline key="post-list-render" type={type} param2={param2} />
         </div>
       </div>
     </LoggedInUserContext.Provider >

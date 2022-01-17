@@ -24,6 +24,7 @@ export default function Header({ username, avatarSrc, date, content }) {
   const handleDelete = async () => {
     if (content.file_url) await storage.refFromURL(content.file_url).delete();
     if (content.image_url) await storage.refFromURL(content.image_url).delete();
+    await database.ref('Saves').child(`${content.key}`).remove();
     await database.ref('Posts').child(content.key).remove();
     window.location.reload();
   };
