@@ -35,14 +35,14 @@ export default function Timeline({ type, param2 }) {
           <div key="searching-post" className='w-full pt-1 pb-1'>
             <input
               type="text"
-              class="form-control"
+              className="form-control"
               id="search_post"
               placeholder='タイトルでポストの検索'
               onChange={(e) => setValue(e.target.value)}
               onKeyPress={(e) => { if (e.key == "Enter") { handleSearch() } }}
             ></input>
           </div>
-          <div key="sorting-post" class="form-control" style={{marginBottom: '0.25rem'}}>
+          <div key="sorting-post" className="form-control" style={{marginBottom: '0.25rem'}}>
             <select className="h-full w-full" onChange={(e) => handleSort(e)}>
               <option value="default">ライクでソートしてから、作成時間で並べ替え</option>
               <option value="ライクでソート">ライクでソート</option>
