@@ -11,6 +11,8 @@ export default function MakeQuiz({ type, data, handleClose }) {
     const { user } = useUser(loggedInUser?.uid);
     const [title, setTitle] = useState('');
     const [time, setTime] = useState('');
+    const [minute, setMinute] = useState('0');
+    const [second, setSecond] = useState('0');
     // const [imgPost, setImgPost] = useState('');
     const [score, setScore] = useState('');
     const [active, setActive] = useState(1);
@@ -120,7 +122,7 @@ export default function MakeQuiz({ type, data, handleClose }) {
                 // console.log(question);
                 break;
         }
-        console.log(question);
+        console.log(time);
     }
     
     function convertDate(date){
@@ -156,6 +158,19 @@ export default function MakeQuiz({ type, data, handleClose }) {
         });
     };
 
+    const inputTime = (type, value) => {
+        console.log(type, value);
+        if (type == 'minute') {
+            setMinute(value);
+            setTime(parseInt(value)*60+parseInt(second));
+        }
+        else {
+            setSecond(value);            
+            setTime(parseInt(minute)*60+parseInt(value));
+        }
+    }
+
+
     const handleChange = e => {
         e.preventDefault();
 
@@ -174,6 +189,8 @@ export default function MakeQuiz({ type, data, handleClose }) {
             console.log(data.val());
             setTitle(data.val().title);
             setTime(data.val().time);
+            setMinute(Math.floor(parseInt(data.val().time)/60));
+            setSecond(parseInt(data.val().time)%60);
             setScore(data.val().score);
             handleDateChange(new Date(data.val().end_date.replaceAll('/', '-')));
             // console.log(data.val().questions['question'+1].question);
@@ -285,13 +302,22 @@ export default function MakeQuiz({ type, data, handleClose }) {
                 </label>
                 <div>
                 <label className="h5">
-                    時間:
-                    <input
-                        type="number"
-                        value={time}
-                        className="form-control text-sm text-gray-base w-50 mr-3  px-4  border border-gray-primary rounded mb-2"
-                        onChange={({ target }) => setTime(target.value)}
-                    />
+                    時間(mm:ss):
+                    <div className='flex flex-row'>
+                        <input
+                            type="number"
+                            value={minute}
+                            className="form-control text-sm text-gray-base w-25 mr-3  px-4  border border-gray-primary rounded mb-2"
+                            onChange={({ target }) => inputTime('minute', target.value)}
+                        />:
+                        <input
+                            type="number"
+                            value={second}
+                            className="form-control text-sm text-gray-base w-25 mx-3  px-4  border border-gray-primary rounded mb-2"
+                            onChange={({ target }) => inputTime('second',target.value)}
+                        />
+                    </div>
+                    
                 </label>
                 <label className="h5">
                     クイズの点数:
