@@ -18,14 +18,14 @@ export default function Footer({ content }) {
     const [save, setSave] = useState(false);
 
     const handleSave = async () => {
-        if (save === false) await database.ref('Saves').child(`${user?.username}/${content?.key}`).set(1);
-        else await database.ref('Saves').child(`${user?.username}/${content?.key}`).remove();
+        if (save === false) await database.ref('Saves').child(`${content?.key}/${user?.username}`).set(1);
+        else await database.ref('Saves').child(`${content?.key}/${user?.username}`).remove();
     }
 
     useEffect(() => {
         async function getSaved() {
             await database
-                .ref(`Saves/${user?.username}/${content?.key}`)
+                .ref(`Saves/${content?.key}/${user?.username}`)
                 .on('value', (snapshot) => {
                     if (snapshot.exists()) {
                         setSave(true);

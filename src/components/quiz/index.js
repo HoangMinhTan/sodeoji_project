@@ -25,7 +25,7 @@ export default function Quizs({ type, param2 }) {
             ) : (
                 quizs.map((quiz) => {
                     return (
-                        <div className="container mb-12 min-height-quiz-present" style={{height: '10%'}}>
+                        <div key={quiz.key} className="container mb-12 min-height-quiz-present">
                             <Quiz content={quiz} />
                         </div>
                     )

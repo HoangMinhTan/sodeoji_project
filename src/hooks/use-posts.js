@@ -9,7 +9,7 @@ export default function usePosts(type, param2, search, user) {
       const PostList = await getPosts(type, param2, search, user);
       PostList.sort((a, b) => {
         if (b.vote_numbers !== a.vote_numbers) return b.vote_numbers - a.vote_numbers;
-        return a.create_date - b.create_date;
+        return b.create_date - a.create_date;
       });
       setPosts(PostList);
     }

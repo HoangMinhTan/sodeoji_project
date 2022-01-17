@@ -114,7 +114,3 @@ export default function QuizRank({ doneUser }) {
 
     );
 }
-
-QuizRank.propTypes = {
-
-};
