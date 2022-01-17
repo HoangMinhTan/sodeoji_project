@@ -17,6 +17,7 @@ export default function ChangePost({ type, post, handleClose }) {
     const [fileName, setFileName] = useState('');
     const [fileSrc, setFileSrc] = useState('');
     const [active, setActive] = useState('group');
+    const [alert, setAlert] = useState(false);
     const { database, storage } = useContext(FirebaseContext);
 
     useEffect(() => {
@@ -80,6 +81,13 @@ export default function ChangePost({ type, post, handleClose }) {
 
         // console.log(event.target.files.length);
         if (event.target.files && event.target.files[event.target.files.length - 1]) {
+            if (imgSrc !== '') {
+                storage.refFromURL(imgSrc).delete().then(() => {
+                    // console.log('success delete');
+                }).catch((error) => {
+                    // console.log('fail delete');
+                });
+            }
             setImgSrc('');
             let reader = new FileReader();
             // reader.onload = (e) => {
@@ -107,9 +115,15 @@ export default function ChangePost({ type, post, handleClose }) {
     }
 
     const onFileChange = (event) => {
-
-        // console.log(event.target.files.length);
+        setAlert(false);
         if (event.target.files && event.target.files[event.target.files.length - 1]) {
+            if (fileSrc !== '') {
+                storage.refFromURL(fileSrc).delete().then(() => {
+                    // console.log('success delete');
+                }).catch((error) => {
+                    // console.log('fail delete');
+                });
+            }
             setFileSrc('');
             let reader = new FileReader();
             // reader.onload = (e) => {
@@ -118,22 +132,27 @@ export default function ChangePost({ type, post, handleClose }) {
             reader.readAsDataURL(event.target.files[event.target.files.length - 1]);
             const file = event.target.files[event.target.files.length - 1];
             setFileName(file.name);
-            const storageRef = storage.ref();
-            let urlName = Date.now() + file.name;
-            const fileRef = storageRef.child(`/posts_file/${urlName}`);
-            fileRef.put(file).then(() => {
-                fileRef.getDownloadURL().then(function (url) {
-                    if (fileSrc !== '') {
-                        storage.refFromURL(fileSrc).delete().then(() => {
-                            console.log('success delete');
-                        }).catch((error) => {
-                            console.log('fail delete');
-                        });
-                    }
-                    setFileSrc(url);
-                    // console.log(fileName, fileSrc);
-                });
-            })
+            if (file.size > 31457280) {
+                setAlert(true);
+            } else {
+                const storageRef = storage.ref();
+                let urlName = Date.now() + file.name;
+                const fileRef = storageRef.child(`/posts_file/${urlName}`);
+                fileRef.put(file).then(() => {
+                    fileRef.getDownloadURL().then(function (url) {
+                        if (fileSrc !== '') {
+                            storage.refFromURL(fileSrc).delete().then(() => {
+                                console.log('success delete');
+                            }).catch((error) => {
+                                console.log('fail delete');
+                            });
+                        }
+                        setFileSrc(url);
+                        // console.log(fileName, fileSrc);
+                    });
+                })
+            }
+
         }
     }
 
@@ -179,7 +198,7 @@ export default function ChangePost({ type, post, handleClose }) {
                     {imgSrc !== '' ? (<div className="padding-login flex items-center justify-center"><img id="target" src={imgSrc} alt="" /></div>) : null}
                 </div>
 
-                <div className="p-4 py-5">
+                <div className="p-4 py-5 flex flex-col items-center">
                     <Grid container justifyContent="center" alignItems="center">
                         <input
                             accept='.txt,.doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.pdf'
@@ -196,6 +215,9 @@ export default function ChangePost({ type, post, handleClose }) {
                         </label>
                     </Grid>
                     {fileSrc !== '' ? (<div className="padding-login flex items-center justify-center"><a href={fileSrc} download>{fileName}</a></div>) : null}
+                    {alert ? (
+                        <strong className='pt-1'>３０ｍｂ以下ファイルだけアップロードできる！</strong>
+                    ) : null}
                 </div>
                 <label>
                     表示:
