@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Header from '../components/header';
 import Timeline from '../components/timeline';
+import Banner from '../components/banner';
 import useUser from '../hooks/use-user';
 import LoggedInUserContext from '../context/logged-in-user';
 import Sidebar from '../components/sidebar'
@@ -22,6 +23,7 @@ export default function Dashboard({ user: loggedInUser }) {
         <div className="grid grid-cols-3-new">
           <Sidebar />
           <Timeline key="post-list-render" type={type} param2={param2} />
+          <Banner />
         </div>
       </div>
     </LoggedInUserContext.Provider >
