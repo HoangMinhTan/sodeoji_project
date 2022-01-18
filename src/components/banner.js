@@ -4,7 +4,7 @@ import { ImageList, ImageListItem } from "@material-ui/core";
 function Banner() {
   return (
     <div className="mt-1 h-screen w-full border-gray-primary flex flex-col items-center sticky">
-      <ImageList rowHeight={280} cols={1}>
+      <ImageList rowHeight={330} cols={1}>
         <ImageListItem>
           <img
             src="https://i.ibb.co/cTCB75P/Blank-Template-Instagram-Stories-1.jpg"
