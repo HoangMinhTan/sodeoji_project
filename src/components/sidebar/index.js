@@ -27,7 +27,7 @@ export default function Sidebar() {
     const { user } = useUser(loggedInUser?.uid);
     const [open, setOpen] = useState(false);
     const [userPostNum, setUserPostNum] = useState(null);
-    const LIMIT_POST = 1;
+    const LIMIT_POST = 20;
 
     const handleClickOpen = () => {
         setOpen(true);
