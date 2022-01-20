@@ -85,11 +85,11 @@ export async function getPosts(type, param2, search, user) {
       break;
     case "save":
       const saved_snapshot = await database
-        .ref(`Saves/${user?.username}`)
+        .ref(`Saves`)
         .once('value');
       const saved = saved_snapshot.val();
       result = await Promise.all(result.filter((item) => {
-        return (saved != null && saved[`${item.key}`]);
+        return (saved != null && saved[`${item.key}`] && saved[`${item.key}`][`${user?.username}`]);
       }));
       break;
     default:
